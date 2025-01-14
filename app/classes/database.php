@@ -17,7 +17,7 @@ class Database {
         if (self::$instance === null) {
             $dsn = $dsn ?? 'mysql:host=localhost;dbname=youdemy';
             $username = $username ?? 'root';
-            $password = $password ?? 'your_password';
+            $password = $password ?? '';
             self::$instance = new Database($dsn, $username, $password);
         }
         return self::$instance;
