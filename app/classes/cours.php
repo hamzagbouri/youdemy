@@ -3,13 +3,13 @@ require_once 'database.php';
 
 
 abstract class Cours  {
-    private $id;
-    private $titre;
-    private $description;
-    private $id_categorie;
-    private $image_path;
-    private $contenue;
-    private $type;
+    protected $id;
+    protected $titre;
+    protected $description;
+    protected $id_categorie;
+    protected $image_path;
+    protected $contenue;
+    protected $type;
 
     public function __construct($id = null, $titre = null, $description = null, $id_categorie = null, $image_path = null, $contenue = null,$type=null) {
         $this->id = $id;

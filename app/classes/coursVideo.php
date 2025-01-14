@@ -10,7 +10,7 @@ class coursVideo extends Cours{
         $type = 'video';
         $this->setType($type);
         $pdo = Database::getInstance()->getConnection();
-        $stmt = $pdo->prepare("INSERT INTO Cours (titre, description, categorie_id, image_path, contenue,contenue_type) VALUES (:titre, :description, :id_categorie, :image_path, :contenue,:type)");
+        $stmt = $pdo->prepare("INSERT INTO Cours (titre, description, categorie_id, image_path, contenu,contenu_type) VALUES (:titre, :description, :id_categorie, :image_path, :contenue,:type)");
         $stmt->bindParam(':titre', $this->titre);
         $stmt->bindParam(':description', $this->description);
         $stmt->bindParam(':id_categorie', $this->id_categorie);
@@ -26,7 +26,7 @@ class coursVideo extends Cours{
         
     }
 
-    public function afficherCoursParId($id)
+    public static function afficherCoursParId($id)
     {
         $pdo = Database::getInstance()->getConnection();
         $stmt = $pdo->query("SELECT * FROM Cours where id = :id");

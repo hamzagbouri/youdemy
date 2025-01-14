@@ -3,7 +3,7 @@ require_once 'cours.php';
 require_once 'database.php';
 class coursTexte extends Cours{
 
-    public function __construct($id = null, $titre = null, $description = null, $id_categorie = null, $image_path = null, $contenue = null,$type=null) {
+    public function __construct($id = null, $titre, $description = null, $id_categorie = null, $image_path = null, $contenue = null,$type=null) {
         parent::__construct($id,$titre,$description,$id_categorie,$image_path,$contenue,$type);
     }
      public  function ajouter()
@@ -11,7 +11,8 @@ class coursTexte extends Cours{
         $type = 'texte';
         $this->setType($type);
         $pdo = Database::getInstance()->getConnection();
-        $stmt = $pdo->prepare("INSERT INTO Cours (titre, description, categorie_id, image_path, contenue,contenue_type) VALUES (:titre, :description, :id_categorie, :image_path, :contenue,:type)");
+        $stmt = $pdo->prepare("INSERT INTO Cours (titre, description, categorie_id, image_path, contenu,contenu_type) VALUES (:titre, :description, :id_categorie, :image_path, :contenue,:type)");
+
         $stmt->bindParam(':titre', $this->titre);
         $stmt->bindParam(':description', $this->description);
         $stmt->bindParam(':id_categorie', $this->id_categorie);
