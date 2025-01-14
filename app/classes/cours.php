@@ -29,7 +29,7 @@ abstract class Cours  {
      public static function afficherTous(){
   
             $pdo = Database::getInstance()->getConnection();
-            $stmt = $pdo->query("SELECT * FROM Cours where type = 'video'");
+            $stmt = $pdo->query("SELECT * FROM Cours ");
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
             $coursList = [];

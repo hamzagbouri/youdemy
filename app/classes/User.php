@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'database.php';
+
 class User {
     protected $id;
     protected $nom;
@@ -18,30 +19,91 @@ class User {
         $this->banned = $banned;
     }
 
+    // Getters
+    public function getId() {
+        return $this->id;
+    }
+
+    public function getNom() {
+        return $this->nom;
+    }
+
+    public function getEmail() {
+        return $this->email;
+    }
+
+    public function getPassword() {
+        return $this->password;
+    }
+
+    public function getRole() {
+        return $this->role;
+    }
+
+    public function isBanned() {
+        return $this->banned;
+    }
+
+    // Setters
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    public function setNom($nom) {
+        $this->nom = $nom;
+    }
+
+    public function setEmail($email) {
+        $this->email = $email;
+    }
+
+    public function setPassword($password) {
+        $this->password = $password;
+    }
+
+    public function setRole($role) {
+        $this->role = $role;
+    }
+
+    public function setBanned($banned) {
+        $this->banned = $banned;
+    }
+
     public static function login($email, $password) {
         $pdo = Database::getInstance()->getConnection();
         $stmt = $pdo->prepare("SELECT * FROM user WHERE email = :email");
         $stmt->bindParam(':email', $email);
         $stmt->execute();
-
+       
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($res) {
             if (password_verify($password, $res['password'])) {
                 if ($res['role'] == 'enseignant') {
-                    
-                    $_SESSION['user'] =  new Enseignant($res['id'], $res['fullName'], $res['email'], $res['password'], $res['role'], $res['active']);
+                    $user = new Enseignant($res['id'], $res['fullName'], $res['email'], $res['password'], $res['role'],$res['banned'], $res['active']);
+                   
                 } elseif ($res['role'] == 'etudiant') {
-                    $_SESSION['user'] = new Etudiant($res['id'], $res['fullName'], $res['email'], $res['password'], $res['role']);
+                  $user = new Etudiant($res['id'], $res['fullName'], $res['email'], $res['password'], $res['role'],$res['banned']);
                 }
-                return true;
-            } else return 'Invalid Password';
+                $_SESSION['logged_id'] = $user->getId();
+                $_SESSION['role'] = $user->getRole();
+                return $user;
+             
+            } else {
+                return 403;
+            }
         }
-        return false; 
+        return false;
     }
-    public function __tostring()
-    {
-        return 'role '.$this->role; 
+
+    public function __toString() {
+        return 'role ' . $this->role;
+    }
+    public static function logout(){
+        unset($_SESSION['user']);
+        
+        session_destroy();
+       
+      
     }
 }
-
 ?>

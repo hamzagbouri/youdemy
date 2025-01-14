@@ -6,8 +6,8 @@ class Enseignant extends User {
 
     protected $active;
 
-    public function __construct( $nom, $email, $password, $role, $active = 0) {
-        parent::__construct($nom, $email, $password, $role);
+    public function __construct( $nom, $email, $password, $role,$banned = 0, $active = 0) {
+        parent::__construct($nom, $email, $password, $role,$banned);
         $this->active = $active;
     }
 
