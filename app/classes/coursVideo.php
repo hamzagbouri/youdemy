@@ -1,21 +1,24 @@
 <?php
 require_once 'cours.php';
 class coursVideo extends Cours{
-
-    public function __construct($id = null, $titre = null, $description = null, $id_categorie = null, $image_path = null, $contenue = null,$type=null) {
-        parent::__construct($id,$titre,$description,$id_categorie,$image_path,$contenue,$type);
+    private $video_url;
+    public function __construct($id = null, $titre = null, $description = null, $id_categorie = null, $image_path = null,$enseignant_id = null, $video_url = null,$type=null) {
+        parent::__construct($id,$titre,$description,$id_categorie,$image_path,$enseignant_id,$type);
+        $this->video_url = $video_url;
     }
-    public function ajouter()
+    public  function ajouter()
     {
         $type = 'video';
         $this->setType($type);
         $pdo = Database::getInstance()->getConnection();
-        $stmt = $pdo->prepare("INSERT INTO Cours (titre, description, categorie_id, image_path, contenu,contenu_type) VALUES (:titre, :description, :id_categorie, :image_path, :contenue,:type)");
+        $stmt = $pdo->prepare("INSERT INTO Cours (titre, description, categorie_id, image_path, video_url,contenu_type,enseignant_id) VALUES (:titre, :description, :id_categorie, :image_path, :video_url,:type,:enseignant_id)");
+
         $stmt->bindParam(':titre', $this->titre);
         $stmt->bindParam(':description', $this->description);
         $stmt->bindParam(':id_categorie', $this->id_categorie);
         $stmt->bindParam(':image_path', $this->image_path);
-        $stmt->bindParam(':contenue', $this->contenue);
+        $stmt->bindParam(':enseignant_id', $this->enseignant_id);
+        $stmt->bindParam(':video_url', $this->video_url);
         $stmt->bindParam(':type', $this->type);
         if ($stmt->execute()) {
             $this->id = $pdo->lastInsertId();
@@ -25,14 +28,30 @@ class coursVideo extends Cours{
         }
         
     }
+    
+    public function mettreAJour() {
+        $sql = "UPDATE cours SET titre = :titre, description = :description, categorie_id = :categorie_id, 
+                enseignant_id = :enseignant_id, video_url = :video_url WHERE id = :id";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute([
+            'titre' => $this->titre,
+            'description' => $this->description,
+            'categorie_id' => $this->categorie_id,
+            'enseignant_id' => $this->enseignant_id,
+            'video_url' => $this->video_url,
+            'id' => $this->id
+        ]);
+    }
 
-    public static function afficherCoursParId($id)
-    {
-        $pdo = Database::getInstance()->getConnection();
-        $stmt = $pdo->query("SELECT * FROM Cours where id = :id");
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        $coursVideo = new coursVideo($row['id'], $row['titre'], $row['description'], $row['id_categorie'], $row['image_path'], $row['contenue'],$result['type']);
-        return $coursVideo;
+    public function afficher() {
+        return "<video src ='".$this->video_url."'>";
+    }
+    
+    public function getVideo_url() {
+        return $this->video_url;
+    }
+    public function setVideo_url($video_url) {
+        return $this->video_url;
     }
 }
 ?>

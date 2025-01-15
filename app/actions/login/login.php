@@ -16,18 +16,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         }
         
-        $res = User::login($email, $password);
+        $user = User::login($email, $password);
        
-        if($res === 403)
+        if($user === 403)
         {
-            $_SESSION['message'] = "Invalid email or password ".$password;
+            $_SESSION['message'] = "Invalid email or password ";
             $_SESSION['message_type'] = "error";
             header('Location: ../../../public/login.php');
         }
-        else if ($res) {
-            $_SESSION['message'] = "Welcome back ".$res->getNom();
-            $_SESSION['message_type'] = "success";
-            header('Location: ../../../public/index.php');
+        else if ($user) {
+            if($user->getRole() == 'enseignant')
+            {
+                $res = Enseignant::isActive($user->getId());
+                if($res->getActive())
+                {
+                   $_SESSION['message'] = "Welcome back ".$user->getNom();
+                    $_SESSION['message_type'] = "success";
+                    header('Location: ../../../public/index.php'); 
+                } else {
+                   
+                    $_SESSION['message'] = "Votre Compte pas encore active";
+                    $_SESSION['message_type'] = "error";
+                    User::logout();
+                }
+
+            } else {
+                $_SESSION['message'] = "Welcome back ".$user->getNom();
+                $_SESSION['message_type'] = "success";
+                header('Location: ../../../public/index.php'); 
+            }
+         
         } else {
             $_SESSION['message'] = "Error Logging In";
             $_SESSION['message_type'] = "error";

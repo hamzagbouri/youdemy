@@ -7,22 +7,22 @@ abstract class Cours  {
     protected $titre;
     protected $description;
     protected $id_categorie;
-    protected $image_path;
-    protected $contenue;
     protected $type;
+    protected $enseignant_id;
 
-    public function __construct($id = null, $titre = null, $description = null, $id_categorie = null, $image_path = null, $contenue = null,$type=null) {
+    public function __construct($id = null, $titre = null, $description = null, $id_categorie = null, $image_path = null,$enseignant_id=null,$type=null) {
         $this->id = $id;
         $this->titre = $titre;
         $this->description = $description;
         $this->id_categorie = $id_categorie;
         $this->image_path = $image_path;
         $this->contenue = $contenue;
+        $this->enseignant_id = $enseignant_id;
         $this->type = $type;
     }
 
     abstract public function ajouter() ;
-    abstract public static function afficherCoursParId($id);
+    abstract public static function afficherCours();
 
   
 
@@ -34,7 +34,14 @@ abstract class Cours  {
     
             $coursList = [];
             foreach ($result as $row) {
-                $coursList[] = new Cours($row['id'], $row['titre'], $row['description'], $row['id_categorie'], $row['image_path'], $row['contenue'],$result['type']);
+                if($row['type'] == 'video')
+                {
+                    $coursList[] = new coursVideo($row['id'], $row['titre'], $row['description'], $row['id_categorie'], $row['image_path'], $row['video_url'],$result['type']);
+                } else 
+                {
+                    $coursList[] = new coursText($row['id'], $row['titre'], $row['description'], $row['id_categorie'], $row['image_path'], $row['contenue'],$result['type']);
+
+                }
             }
             return $coursList;
         
@@ -124,9 +131,6 @@ abstract class Cours  {
         $this->image_path = $image_path;
     }
 
-    public function getContenue() {
-        return $this->contenue;
-    }
 
     public function setContenue($contenue) {
         $this->contenue = $contenue;
