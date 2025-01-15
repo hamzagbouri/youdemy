@@ -47,6 +47,14 @@ class Tag {
         }
         return $tags;
     }
+    public static function searchTag($search) {
+        $pdo = Database::getInstance()->getConnection();
+        $stmt = $pdo->prepare("SELECT * FROM Tag WHERE titre LIKE :query LIMIT 10");
+        $stmt->execute(['query' => '%' . $search . '%']);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+       
+        return $result;
+    }
 
     public function update() {
         $pdo = Database::getInstance()->getConnection();

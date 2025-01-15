@@ -28,7 +28,7 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div class="md:col-span-1">
                     <div class="flex items-center gap-2 mb-4">
-                        <img src="assets/images/logo-youdemy.png " height="200" width="200">
+                        <img src="/Youdemy/public/assets/images/logo-youdemy.png " height="200" width="200">
                     </div>
                     <p class="text-gray-600 mb-6">Eros in cursus turpis massa tincidunt Faucibus scelerisque eleifend
                         vulputate sapien nec sagittis.</p>

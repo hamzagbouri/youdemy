@@ -21,11 +21,11 @@ class Enseignant extends User {
     public static function isActive($id)
     {
         $pdo = Database::getInstance()->getConnection();
-        $stmt = $pdo->prepare("SELECT * from user WHERE id = :id");
+        $stmt = $pdo->prepare("SELECT active from user WHERE id = :id");
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
-        return new Enseignant($res['id'],$res['fullName'],$res['email'],null,$res['role'],$res['banned'],$res['active']);
+        return $res['active'];
     }
     public function getActive()
     {

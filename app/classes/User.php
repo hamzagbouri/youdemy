@@ -99,11 +99,9 @@ class User {
         return 'role ' . $this->role;
     }
     public static function logout(){
-        unset($_SESSION['user']);
+        unset($_SESSION['logged_id']);
+        unset($_SESSION['role']);
         
-        session_destroy();
-       
-      
     }
 }
 ?>

@@ -43,7 +43,7 @@ class coursVideo extends Cours{
         ]);
     }
 
-    public function afficher() {
+    public function afficherCours() {
         return "<video src ='".$this->video_url."'>";
     }
     

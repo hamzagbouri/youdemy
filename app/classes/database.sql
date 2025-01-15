@@ -24,9 +24,10 @@ CREATE TABLE IF NOT EXISTS  cours (
     enseignant_id INT,
     categorie_id INT(100),
     contenu_type ENUM('texte', 'video'),
+    image_path varchar(255),
     contenu TEXT DEFAULT NULL,
     video_url varchar(255) DEFAULT NULL,
-    status ENUM('En Attente','Accepte','Refuse'),
+    status ENUM('En Attente','Accepte','Refuse') DEFAULT "En Attente",
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (categorie_id) REFERENCES Categorie(id),
     FOREIGN KEY (enseignant_id) REFERENCES User(id)

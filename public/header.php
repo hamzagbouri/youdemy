@@ -42,11 +42,11 @@
 <header class="border-b bg-white">
             <div class="container mx-auto px-4">
                 <div class="flex items-center justify-between py-4">
-                    <a href="./index.php">
-                    <img class="w-32 h-16" src="./assets/images/logo-youdemy.png" alt="Youdemy Platform">
+                    <a href="/Youdemy/public/index.php">
+                    <img class="w-32 h-16" src="/Youdemy/public/assets/images/logo-youdemy.png" alt="Youdemy Platform">
                     </a>
                     <nav class="hidden md:flex items-center space-x-6">
-                        <a href="./index.php" class="text-gray-900 hover:text-blue-500 transition-colors">Home</a>
+                        <a href="/Youdemy/public/index.php" class="text-gray-900 hover:text-blue-500 transition-colors">Home</a>
                         <a href=".#"
                             class="text-gray-900 hover:text-blue-500 transition-colors">Cours</a>
                         <a href="#"
@@ -60,7 +60,7 @@
                                     echo "<a href='#'
                             class='text-gray-900 hover:text-blue-500 transition-colors'>Mes Cours</a>";
                                 } else {
-                                    echo "<a href='#'
+                                    echo "<a href='enseignant/cours.php'
                             class='text-gray-900 hover:text-blue-500 transition-colors'>Mes Cours end</a>";
 
                                 }
@@ -75,18 +75,18 @@
                        ?>
                         <button
                             class="p-2 px-4 bg-primary text-white rounded-full hover:bg-white hover:text-primary hover:border hover:border-secondary transition-colors">
-                            <a href="./login.php">Login</a>
+                            <a href="/Youdemy/public/login.php">Login</a>
                         </button>
                         <button
                             class="p-2 px-4 bg-primary text-white rounded-full hover:bg-white hover:text-primary hover:border hover:border-secondary transition-colors">
-                            <a href="./register.php">Register</a>
+                            <a href="/Youdemy/public/register.php">Register</a>
                         </button>
                         <?php
                        } else {
                         ?>
                          <button
                             class="p-2 px-4 bg-primary text-white rounded-full hover:bg-white hover:text-primary hover:border hover:border-secondary transition-colors">
-                            <a href="../app/actions/login/login.php?logout">Logout</a>
+                            <a href="/Youdemy/app/actions/login/login.php?logout">Logout</a>
                         </button>
                         <?php
                        }
@@ -100,12 +100,12 @@
                 <!-- Mobile Menu-->
                 <div id="mobile-menu" class="hidden md:hidden py-4">
                     <nav class="flex flex-col space-y-4">
-                    <a href="./index.php" class="text-yellow-400 font-bold  hover:text-bg-yellow-500 transition-colors">Home</a>
-                        <a href="./pages/courses.php" class="text-gray-900 hover:text-bg-yellow-500 transition-colors">Courses</a>
-                        <a href="./pages/pricing.php" class="text-gray-900 hover:text-bg-yellow-500 transition-colors">Pricing</a>
-                        <a href="./pages/features.php" class="text-gray-900 hover:text-bg-yellow-500 transition-colors">Features</a>
-                        <a href="./pages/features.php" class="text-gray-900 hover:text-bg-yellow-500 transition-colors">Blog</a>
-                        <a href="./pages/contact.php" class="text-gray-900 hover:text-bg-yellow-500 transition-colors">Help Center</a>
+                    <a href="/Youdemy/public/index.php" class="text-yellow-400 font-bold  hover:text-bg-yellow-500 transition-colors">Home</a>
+                        <a href="/Youdemy/public/pages/courses.php" class="text-gray-900 hover:text-bg-yellow-500 transition-colors">Courses</a>
+                        <a href="/Youdemy/public/pages/pricing.php" class="text-gray-900 hover:text-bg-yellow-500 transition-colors">Pricing</a>
+                        <a href="/Youdemy/public/pages/features.php" class="text-gray-900 hover:text-bg-yellow-500 transition-colors">Features</a>
+                        <a href="/Youdemy/public/pages/features.php" class="text-gray-900 hover:text-bg-yellow-500 transition-colors">Blog</a>
+                        <a href="/Youdemy/public/pages/contact.php" class="text-gray-900 hover:text-bg-yellow-500 transition-colors">Help Center</a>
                     </nav>
                 </div>
             </div>

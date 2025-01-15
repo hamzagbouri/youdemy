@@ -1,5 +1,7 @@
 <?php
 require_once 'database.php';
+require_once 'coursTexte.php';
+require_once 'coursVideo.php';
 
 
 abstract class Cours  {
@@ -16,13 +18,13 @@ abstract class Cours  {
         $this->description = $description;
         $this->id_categorie = $id_categorie;
         $this->image_path = $image_path;
-        $this->contenue = $contenue;
         $this->enseignant_id = $enseignant_id;
         $this->type = $type;
     }
 
     abstract public function ajouter() ;
-    abstract public static function afficherCours();
+    abstract public function afficherCours();
+    abstract public function mettreAJour();
 
   
 
@@ -34,12 +36,12 @@ abstract class Cours  {
     
             $coursList = [];
             foreach ($result as $row) {
-                if($row['type'] == 'video')
+                if($row['contenu_type'] == 'video')
                 {
-                    $coursList[] = new coursVideo($row['id'], $row['titre'], $row['description'], $row['id_categorie'], $row['image_path'], $row['video_url'],$result['type']);
+                    $coursList[] = new coursVideo($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'], $row['video_url'],$row['contenu_type']);
                 } else 
                 {
-                    $coursList[] = new coursText($row['id'], $row['titre'], $row['description'], $row['id_categorie'], $row['image_path'], $row['contenue'],$result['type']);
+                    $coursList[] = new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'], $row['contenu'],$row['contenu_type']);
 
                 }
             }

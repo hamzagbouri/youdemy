@@ -25,33 +25,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: ../../../public/login.php');
         }
         else if ($user) {
-            if($user->getRole() == 'enseignant')
-            {
-                $res = Enseignant::isActive($user->getId());
-                if($res->getActive())
+            if ($user->isBanned()){
+                $_SESSION['message'] = "This User is banned";
+                $_SESSION['message_type'] = "error";
+                User::logout();
+                header('Location: ../../../public/login.php');
+            } else {
+                if($user->getRole() == 'enseignant')
                 {
-                   $_SESSION['message'] = "Welcome back ".$user->getNom();
+                    $res = Enseignant::isActive($user->getId());
+                    
+                    if($res == 1)
+                    {
+                       $_SESSION['message'] = "Welcome back ".$user->getNom();
+                        $_SESSION['message_type'] = "success";
+                        header('Location: ../../../public/index.php'); 
+                    } else if($res == 0) {
+                        $_SESSION['message'] = "Compte pas encore activé ";
+                        $_SESSION['message_type'] = "error";
+                        User::logout();
+                        header('Location: ../../../public/login.php');
+                    } 
+    
+                } else {
+                    $_SESSION['message'] = "Welcome back ".$user->getNom();
                     $_SESSION['message_type'] = "success";
                     header('Location: ../../../public/index.php'); 
-                } else {
-                   
-                    $_SESSION['message'] = "Votre Compte pas encore active";
-                    $_SESSION['message_type'] = "error";
-                    User::logout();
                 }
-
-            } else {
-                $_SESSION['message'] = "Welcome back ".$user->getNom();
-                $_SESSION['message_type'] = "success";
-                header('Location: ../../../public/index.php'); 
             }
-         
-        } else {
-            $_SESSION['message'] = "Error Logging In";
-            $_SESSION['message_type'] = "error";
-            header('Location: ../../../public/login.php');
-        }
-        exit;
+             
+            } else {
+                $_SESSION['message'] = "User Not Found";
+                $_SESSION['message_type'] = "error";
+                header('Location: ../../../public/login.php');
+            }
+            exit;
+            
+            
 
     } else if (isset($_POST['fullName-signup'])) {
         $email = trim(htmlspecialchars($_POST['email-signup']));

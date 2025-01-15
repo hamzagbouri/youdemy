@@ -17,9 +17,9 @@ class coursTexte extends Cours{
 
         $stmt->bindParam(':titre', $this->titre);
         $stmt->bindParam(':description', $this->description);
-        $stmt->bindParam(':id_categorie', $this->id_categorie);
+        $stmt->bindParam(':id_categorie', $this->id_categorie,PDO::PARAM_INT);
         $stmt->bindParam(':image_path', $this->image_path);
-        $stmt->bindParam(':enseignant_id', $this->enseignant_id);
+        $stmt->bindParam(':enseignant_id', $this->enseignant_id,PDO::PARAM_INT);
         $stmt->bindParam(':contenue', $this->contenue);
         $stmt->bindParam(':type', $this->type);
         if ($stmt->execute()) {
@@ -31,7 +31,7 @@ class coursTexte extends Cours{
         
     }
     
-    public function mettreAJour($id) {
+    public function mettreAJour() {
         $sql = "UPDATE cours SET titre = :titre, description = :description, categorie_id = :categorie_id, 
                 enseignant_id = :enseignant_id, contenu = :contenu WHERE id = :id";
         $stmt = self::$pdo->prepare($sql);
@@ -41,10 +41,10 @@ class coursTexte extends Cours{
             'categorie_id' => $this->categorie_id,
             'enseignant_id' => $this->enseignant_id,
             'contenu' => $this->contenu,
-            'id' => $id
+            'id' => $this->id
         ]);
     }
-    public function afficher() {
+    public function afficherCours() {
         return "<p> ".$this->contenu." </p>";
     }
 
