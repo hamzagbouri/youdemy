@@ -47,3 +47,8 @@ CREATE TABLE IF NOT EXISTS  etudiant_cours(
     FOREIGN KEY (cours_id) REFERENCES Cours(id),
     FOREIGN KEY (etudiant_id) REFERENCES user(id)
 );
+
+CREATE VIEW CoursView AS
+SELECT c.*,u.fullName 
+FROM cours c
+JOIN user u ON c.enseignant_id = u.id;

@@ -1,14 +1,14 @@
 <?php?><?php
-session_start();
+require_once dirname(__DIR__, 3) . '/Youdemy/app/actions/categorie/get.php';
+require_once dirname(__DIR__, 3) . '/Youdemy/app/actions/cours/getCours.php';
 if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'enseignant')
 {
         header('Location: ../index.php');
     
 }
-require_once dirname(__DIR__, 3) . '/Youdemy/app/actions/categorie/get.php';
-require_once dirname(__DIR__, 3) . '/Youdemy/app/actions/cours/getCours.php';
+
 $categories = getCategory::getAllCategories();
-$cours = getCours::getAll();
+$cours = getCours::getAllByTeacher();
 
 
 
@@ -62,31 +62,80 @@ $cours = getCours::getAll();
        <?php include '../header.php'?>
 
         <!-- Hero Section -->
-        <section
-            class="hero bg-blue-500/5 flex-grow flex items-center bg-opacity-20   bg-cover bg-center">
-            <div class="container mx-auto flex flex-col items-center py-12 px-6 md:px-12">
-                <div class="text-center space-y-6">
-                    <h1 class="text-4xl md:text-5xl font-bold">
-                        Share with us your courses<br>
-                        <span class="text-gradient md:leading-relaxed">Your Courses are here</span>
-                    </h1>
-                    <p class="text-gray-600 md:text-lg">
-                        Empower Your Mind with World-Class Learning – Join Youdemy Today
-                    </p>
-
-                    <!-- Search Bar -->
-                    
-                    <div class="flex items-center flex justify-center space-x-2">
-                        <span class="text-blue-400 text-xl">
-                            <i class="ri-star-fill"></i>
-                        </span>
-                        <p class="text-gray-600">5-Star Ratings for Learning, Course Quality, and Student Success</p>
-                    </div>
-
-                </div>
-            </div>
-        </section>
+        <section class="bg-blue-500/5 py-12 px-6 md:px-12">
+  <div class="container mx-auto">
+    <div class="text-center mb-10">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">
+        Tableau de Bord
+        <span class="block text-gradient">Statistiques des Cours</span>
+      </h1>
+      <p class="text-gray-600 md:text-lg">Aperçu de vos performances et de l'engagement des étudiants</p>
     </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Total Students Card -->
+      <div class="bg-white p-6 rounded-lg shadow-md border border-blue-100 hover:border-blue-300 transition-all">
+        <div class="flex items-center justify-between mb-4">
+          <div class="p-3 bg-blue-100 rounded-lg">
+            <i class="ri-user-line text-2xl text-blue-600"></i>
+          </div>
+          <span class="text-sm text-gray-500">Total Étudiants</span>
+        </div>
+        <h3 class="text-3xl font-bold text-gray-800">2,845</h3>
+        <p class="text-green-500 text-sm mt-2 flex items-center">
+          <i class="ri-arrow-up-line mr-1"></i>
+          +12.5% ce mois
+        </p>
+      </div>
+
+      <!-- Total Courses Card -->
+      <div class="bg-white p-6 rounded-lg shadow-md border border-blue-100 hover:border-blue-300 transition-all">
+        <div class="flex items-center justify-between mb-4">
+          <div class="p-3 bg-blue-100 rounded-lg">
+            <i class="ri-book-open-line text-2xl text-blue-600"></i>
+          </div>
+          <span class="text-sm text-gray-500">Total Cours</span>
+        </div>
+        <h3 class="text-3xl font-bold text-gray-800">156</h3>
+        <p class="text-green-500 text-sm mt-2 flex items-center">
+          <i class="ri-arrow-up-line mr-1"></i>
+          +5.3% ce mois
+        </p>
+      </div>
+
+      <!-- Average Rating Card -->
+      <div class="bg-white p-6 rounded-lg shadow-md border border-blue-100 hover:border-blue-300 transition-all">
+        <div class="flex items-center justify-between mb-4">
+          <div class="p-3 bg-blue-100 rounded-lg">
+            <i class="ri-star-line text-2xl text-blue-600"></i>
+          </div>
+          <span class="text-sm text-gray-500">Note Moyenne</span>
+        </div>
+        <h3 class="text-3xl font-bold text-gray-800">4.8</h3>
+        <p class="text-green-500 text-sm mt-2 flex items-center">
+          <i class="ri-arrow-up-line mr-1"></i>
+          +0.3 ce mois
+        </p>
+      </div>
+
+      <!-- Completion Rate Card -->
+      <div class="bg-white p-6 rounded-lg shadow-md border border-blue-100 hover:border-blue-300 transition-all">
+        <div class="flex items-center justify-between mb-4">
+          <div class="p-3 bg-blue-100 rounded-lg">
+            <i class="ri-medal-line text-2xl text-blue-600"></i>
+          </div>
+          <span class="text-sm text-gray-500">Taux Completion</span>
+        </div>
+        <h3 class="text-3xl font-bold text-gray-800">85%</h3>
+        <p class="text-green-500 text-sm mt-2 flex items-center">
+          <i class="ri-arrow-up-line mr-1"></i>
+          +2.1% ce mois
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+   
 
 
     <!-- Courses Categories Section  -->
@@ -104,35 +153,104 @@ $cours = getCours::getAll();
 
         <!-- Existing Course Card -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-        <?php
-        foreach($cours as $courItem)
-        {
-            ?>
-        <div class="mt-6 ">
-            <div class="bg-white border border-blue-400 rounded-lg shadow-md p-4 hover:scale-105 transition-transform">
-                <img src="../<?php echo $courItem->getImagePath();?>" alt="Course Image" class="rounded-t-lg  w-[100%]">
-                <div class="py-3">
-                    <p class="text-sm text-gray-500 flex items-center space-x-2">
-                        <span><i class="ri-calendar-line"></i> 8 Nov, 2023</span>
-                        <span><i class="ri-file-list-line"></i> 3 Curriculum</span>
-                        <span><i class="ri-group-line"></i> 7 Students</span>
-                    </p>
-                    <h3 class="text-lg font-semibold text-gray-800 mt-2"><?php echo $courItem->getTitre();?></h3>
-                    <p class="text-gray-600 text-sm mt-1">
-                    <?php echo $courItem->getDescription();?>
-                    </p>
-                    <div class="flex items-center justify-between mt-3">
-                        <p class="text-blue-400 font-bold">Free</p>
-                        <p class="text-blue-400 flex items-center"><i class="ri-star-fill"></i> 4.4</p>
-                    </div>
-                </div>
+    <?php foreach($cours as $courItem) { ?>
+    <div class="group relative bg-white border border-blue-200 rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300">
+        <!-- Course Image Container -->
+        <div class="relative">
+            <img 
+                src="../<?php echo $courItem->getImagePath();?>" 
+                alt="Course Image" 
+                class="w-full h-48 object-cover"
+            >
+            <!-- Overlay Actions -->
+            <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
+                <a 
+                   href="../viewCours.php?coursId=<?php echo $courItem->getId();?>"
+                    class="bg-white text-blue-600 p-2 rounded-full hover:bg-blue-50 transition-colors">
+                    <i class="ri-eye-line text-xl"></i>
+    </a>
+                <button 
+                    onclick="confirmDelete(<?php echo $courItem->getId();?>)"
+                    class="bg-white text-red-500 p-2 rounded-full hover:bg-red-50 transition-colors">
+                    <i class="ri-delete-bin-line text-xl"></i>
+                </button>
             </div>
         </div>
-            <?php
-        }
-        ?>
+
+        <!-- Course Content -->
+        <div class="p-5">
+            <!-- Course Status Badge -->
+            <div class="flex justify-between items-center mb-3">
+                <span class="bg-blue-50 text-blue-600 text-xs font-medium px-2.5 py-1 rounded-full">
+                    Active
+                </span>
+                <span class="text-gray-500 text-sm">
+                    <i class="ri-calendar-line"></i> 
+                    <?php echo date('d M, Y'); ?>
+                </span>
+            </div>
+
+            <!-- Course Title -->
+            <h3 class="text-xl font-semibold text-gray-800 mb-2 line-clamp-1">
+                <?php echo $courItem->getTitre();?>
+            </h3>
+
+            <!-- Course Description -->
+            <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+                <?php echo $courItem->getDescription();?>
+            </p>
+
+            <!-- Course Stats -->
+            <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                <span class="flex items-center">
+                    <i class="ri-file-list-line mr-1"></i> 3 Lessons
+                </span>
+                <span class="flex items-center">
+                    <i class="ri-time-line mr-1"></i> 2.5 hrs
+                </span>
+                <span class="flex items-center">
+                    <i class="ri-group-line mr-1"></i> 7 Students
+                </span>
+            </div>
+
+            <!-- Course Footer -->
+            <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                <div class="flex items-center space-x-1">
+                    <i class="ri-star-fill text-yellow-400"></i>
+                    <span class="font-semibold">4.4</span>
+                    <span class="text-gray-500 text-sm">(128)</span>
+                </div>
+                <span class="text-blue-600 font-semibold">Free</span>
+            </div>
         </div>
+    </div>
+    <?php } ?>
+</div>
+
+<!-- Delete Confirmation Modal Script -->
+<script>
+function confirmDelete(courseId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "This action cannot be undone!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#003366',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Add your delete course logic here
+            // window.location.href = `delete_course.php?id=${courseId}`;
+        }
+    });
+}
+
+function editCourse(courseId) {
+    // Add your edit course logic here
+    // window.location.href = `edit_course.php?id=${courseId}`;
+}
+</script>
     </div>
 
     <!-- Modal for Adding a Course -->
@@ -236,6 +354,7 @@ $cours = getCours::getAll();
         </div>
     </div>
 </section>
+
 <script src = "cours.js">
 
 </script>

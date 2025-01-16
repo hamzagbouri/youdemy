@@ -4,8 +4,8 @@ require_once 'database.php';
 class coursTexte extends Cours{
     private $contenue;
 
-    public function __construct($id = null, $titre, $description = null, $id_categorie = null, $image_path = null,$enseignant_id=null, $contenue = null,$type=null) {
-        parent::__construct($id,$titre,$description,$id_categorie,$image_path,$enseignant_id,$type);
+    public function __construct($id = null, $titre, $description = null, $id_categorie = null, $image_path = null,$enseignant_id=null, $contenue = null,$type=null,$status=null) {
+        parent::__construct($id,$titre,$description,$id_categorie,$image_path,$enseignant_id,$type,$status);
         $this->contenue = $contenue;
     }
      public  function ajouter()
@@ -40,12 +40,14 @@ class coursTexte extends Cours{
             'description' => $this->description,
             'categorie_id' => $this->categorie_id,
             'enseignant_id' => $this->enseignant_id,
-            'contenu' => $this->contenu,
+            'contenu' => $this->contenue,
             'id' => $this->id
         ]);
     }
     public function afficherCours() {
-        return "<p> ".$this->contenu." </p>";
+        echo "<div class='py-6 px-12'>
+                <p class='text-center text-xl'> $this->contenue </p>
+                </div>";
     }
 
      

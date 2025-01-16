@@ -2,8 +2,8 @@
 require_once 'cours.php';
 class coursVideo extends Cours{
     private $video_url;
-    public function __construct($id = null, $titre = null, $description = null, $id_categorie = null, $image_path = null,$enseignant_id = null, $video_url = null,$type=null) {
-        parent::__construct($id,$titre,$description,$id_categorie,$image_path,$enseignant_id,$type);
+    public function __construct($id = null, $titre = null, $description = null, $id_categorie = null, $image_path = null,$enseignant_id = null, $video_url = null,$type=null,$status=null) {
+        parent::__construct($id,$titre,$description,$id_categorie,$image_path,$enseignant_id,$type,$status);
         $this->video_url = $video_url;
     }
     public  function ajouter()
@@ -44,7 +44,13 @@ class coursVideo extends Cours{
     }
 
     public function afficherCours() {
-        return "<video src ='".$this->video_url."'>";
+     
+        echo "<div class='aspect-video bg-gray-900 relative'>
+                <video class='w-full h-full' controls>
+                    <source src='./$this->video_url' type='video/mp4'>
+                    Your browser does not support the video tag.
+                </video>
+              </div>";
     }
     
     public function getVideo_url() {

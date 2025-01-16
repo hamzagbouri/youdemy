@@ -47,7 +47,7 @@
                     </a>
                     <nav class="hidden md:flex items-center space-x-6">
                         <a href="/Youdemy/public/index.php" class="text-gray-900 hover:text-blue-500 transition-colors">Home</a>
-                        <a href=".#"
+                        <a href="/Youdemy/public/cours.php"
                             class="text-gray-900 hover:text-blue-500 transition-colors">Cours</a>
                         <a href="#"
                             class="text-gray-900 hover:text-blue-500 transition-colors">Contact</a>

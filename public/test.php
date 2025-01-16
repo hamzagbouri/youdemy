@@ -1,24 +1,15 @@
 <?php?><?php
-require_once __DIR__. '/../app/actions/categorie/get.php';
-require_once __DIR__ . '/../app/actions/cours/getCours.php';
-if(!isset($_SESSION['logged_id']) || !isset($_GET['coursId']))
-{
-        header('Location: index.php');
+// session_start();
+// if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'enseignant')
+// {
+//         header('Location: index.php');
     
-}
-$mine = false;
+// }
+// require_once dirname(__DIR__, 3) . '/Youdemy/app/actions/categorie/get.php';
+// require_once dirname(__DIR__, 3) . '/Youdemy/app/actions/cours/getCours.php';
+// $categories = getCategory::getAllCategories();
+// $cours = getCours::getAll();
 
-$idCours = trim(htmlspecialchars($_GET['coursId']));
-
-$id = $_SESSION['logged_id'];
-$categories = getCategory::getAllCategories();
-$cours = getCours::getById($idCours);
-if($_SESSION['role'] == 'enseignant' && $cours->getEnseignantId() == $id)
-{
-    $mine = true;
-}
-
-// var_dump($cours);
 
 
 ?>
@@ -68,16 +59,40 @@ if($_SESSION['role'] == 'enseignant' && $cours->getEnseignantId() == $id)
 
 
         <!-- Header -->
-       <?php include 'header.php'?>
+       <?php include '../header.php'?>
 
+        <!-- Hero Section -->
+        <section
+            class="hero bg-blue-500/5 flex-grow flex items-center bg-opacity-20   bg-cover bg-center">
+            <div class="container mx-auto flex flex-col items-center py-12 px-6 md:px-12">
+                <div class="text-center space-y-6">
+                    <h1 class="text-4xl md:text-5xl font-bold">
+                        Share with us your courses<br>
+                        <span class="text-gradient md:leading-relaxed">Your Courses are here</span>
+                    </h1>
+                    <p class="text-gray-600 md:text-lg">
+                        Empower Your Mind with World-Class Learning – Join Youdemy Today
+                    </p>
 
+                    <!-- Search Bar -->
+                    
+                    <div class="flex items-center flex justify-center space-x-2">
+                        <span class="text-blue-400 text-xl">
+                            <i class="ri-star-fill"></i>
+                        </span>
+                        <p class="text-gray-600">5-Star Ratings for Learning, Course Quality, and Student Success</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </div>
 
 
     <!-- Courses Categories Section  -->
 
 
     <!-- Courses Grid Section -->
-
 
     <section>
     <div class="container mx-auto px-4 py-12">
@@ -93,24 +108,8 @@ if($_SESSION['role'] == 'enseignant' && $cours->getEnseignantId() == $id)
                             Video Course
                         </span>
                     </div>
-                    <?php if($mine): ?>
-                    <div class="flex gap-2">
-                        <button 
-                            onclick="editCourse(<?php echo $cours->getId(); ?>)"
-                            class="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
-                            <i class="ri-edit-line"></i>
-                            Edit
-                        </button>
-                        <button 
-                            onclick="confirmDelete(<?php echo $cours->getId(); ?>)"
-                            class="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors">
-                            <i class="ri-delete-bin-line"></i>
-                            Delete
-                        </button>
-                    </div>
-                    <?php endif; ?>
-                    <h1 class="text-3xl font-bold text-gray-800 mb-4"><?php var_dump($cours->getStatus()) ?></h1>
-                    <p class="text-gray-600 text-lg mb-6"><?php echo $cours->getDescription() ?>.</p>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-4">Complete Web Development Bootcamp 2024</h1>
+                    <p class="text-gray-600 text-lg mb-6">Master modern web development with this comprehensive course covering HTML, CSS, JavaScript, and popular frameworks.</p>
                     
                     <!-- Instructor Info -->
                     <div class="flex items-center gap-4 pb-4 border-b">
@@ -122,18 +121,24 @@ if($_SESSION['role'] == 'enseignant' && $cours->getEnseignantId() == $id)
                     </div>
                 </div>
                 
-                <?php  $cours->afficherCours() ?>
-   
-         
-                
+                <!-- Video Content Example -->
+                <div class="aspect-video bg-gray-900">
+                    <div class="w-full h-full flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="ri-play-fill text-4xl text-white"></i>
+                            </div>
+                            <p class="text-white/70 text-sm">Preview video available</p>
+                        </div>
+                    </div>
+                </div>
                 
                 <!-- Course Content -->
                 <div class="p-8">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <!-- Main Content -->
                         <div class="md:col-span-2">
-                            <h2 class="text-2xl font-bold mb-6">Course Overview </h2>
-                          
+                            <h2 class="text-2xl font-bold mb-6">Course Overview</h2>
                             <div class="prose max-w-none">
                                 <p class="text-gray-600 mb-4">In this comprehensive course, you'll learn:</p>
                                 <ul class="space-y-2 text-gray-600">
@@ -199,23 +204,8 @@ if($_SESSION['role'] == 'enseignant' && $cours->getEnseignantId() == $id)
         </div>
     </div>
 </section>
-<script >
-function confirmDelete(courseId) {
-    Swal.fire({
-        title: 'Delete Course?',
-        text: "This action cannot be undone!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#dc2626',
-        cancelButtonColor: '#6b7280',
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'Cancel'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = `../app/actions/cours/delete.php?idCours=${courseId}`;
-        }
-    });
-}
+<script src = "cours.js">
+
 </script>
 
     <!-- FAQs Section -->

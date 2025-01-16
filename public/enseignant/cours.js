@@ -46,6 +46,7 @@ function addTag(tag) {
     if (!selectedTags.some(t => t.id === tag.id || t.titre.toLowerCase() === tag.titre.toLowerCase())) {
         selectedTags.push(tag);
         updateSelectedTags();
+       
     }
     courseTagsInput.value = ''; 
     tagsList.classList.add('hidden'); 
@@ -53,6 +54,7 @@ function addTag(tag) {
 
 function removeTag(tag) {
     selectedTags = selectedTags.filter(t => t.id !== tag.id);
+    console.log(selectedTags)
     updateSelectedTags();
 }
 
@@ -69,6 +71,7 @@ function updateSelectedTags() {
         tagElement.appendChild(removeIcon);
         selectedTagsContainer.appendChild(tagElement);
     });
+    
 }
 
 courseTagsInput.addEventListener('input', function () {

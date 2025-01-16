@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../../classes/coursVideo.php';
 require_once __DIR__ . '/../../classes/coursTexte.php';
-
+session_start();
 
 // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //             $input = file_get_contents('php://input');
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $description = $_POST['description'] ;
         $id_categorie = $_POST['categorie'] ;
         $type = $_POST['type'] ; 
-        $enseignant_id = 9; 
+        $enseignant_id = $_SESSION['logged_id']; 
     
         // Handle file uploads
         $imagePath = null;

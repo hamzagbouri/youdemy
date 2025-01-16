@@ -1,5 +1,9 @@
 <?php
-session_start();
+require_once __DIR__ . '../../app/actions/cours/getCours.php';
+require_once __DIR__ . '../../app/actions/categorie/get.php';
+$cours = getCours::getTwo();
+$categories = getCategory::getAllCategories();
+
 
 ?>
 <!DOCTYPE html>
@@ -101,86 +105,27 @@ session_start();
                     of professional courses designed by industry experts.
                 </p>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div
-                    class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 hover:border-blue-400 hover:scale-105 transition-transform duration-300">
-                    <div class="flex items-center gap-4">
-                        <div class="p-3 bg-blue-400 text-white rounded-lg">
-                            <i class="ri-palette-line text-2xl"></i>
+                <?php foreach($categories as $categorie) 
+                {
+                    echo " <div
+                    class='bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 hover:border-blue-400 hover:scale-105 transition-transform duration-300'>
+                    <div class='flex items-center gap-4'>
+                        <div class='p-3 bg-blue-400 text-white rounded-lg'>
+                            <i class='ri-code-line text-2xl'></i>
                         </div>
                         <div>
-                            <h3 class="font-semibold text-lg">Art Illustration</h3>
-                            <p class="text-gray-500 text-sm">2 Courses</p>
+                            <h3 class='font-semibold text-lg'>".$categorie->getTitre()."</h3>
+                            <p class='text-gray-500 text-sm'>1 Course</p>
                         </div>
                     </div>
-                </div>
+                </div>";
+                }
+                ?>
 
-                <div
-                    class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 hover:border-blue-400 hover:scale-105 transition-transform duration-300">
-                    <div class="flex items-center gap-4">
-                        <div class="p-3 bg-blue-400 text-white rounded-lg">
-                            <i class="ri-computer-line text-2xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-lg">Digital Marketing</h3>
-                            <p class="text-gray-500 text-sm">2 Courses</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 hover:border-blue-400 hover:scale-105 transition-transform duration-300">
-                    <div class="flex items-center gap-4">
-                        <div class="p-3 bg-blue-400 text-white rounded-lg">
-                            <i class="ri-pen-nib-line text-2xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-lg">Graphic Design</h3>
-                            <p class="text-gray-500 text-sm">1 Course</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 hover:border-blue-400 hover:scale-105 transition-transform duration-300">
-                    <div class="flex items-center gap-4">
-                        <div class="p-3 bg-blue-400 text-white rounded-lg">
-                            <i class="ri-robot-line text-2xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-lg">Robotics</h3>
-                            <p class="text-gray-500 text-sm">1 Course</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 hover:border-blue-400 hover:scale-105 transition-transform duration-300">
-                    <div class="flex items-center gap-4">
-                        <div class="p-3 bg-blue-400 text-white rounded-lg">
-                            <i class="ri-layout-line text-2xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-lg">Web Designing</h3>
-                            <p class="text-gray-500 text-sm">1 Course</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 hover:border-blue-400 hover:scale-105 transition-transform duration-300">
-                    <div class="flex items-center gap-4">
-                        <div class="p-3 bg-blue-400 text-white rounded-lg">
-                            <i class="ri-code-line text-2xl"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-lg">Web Development</h3>
-                            <p class="text-gray-500 text-sm">1 Course</p>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
+           
         </div>
     </section>
 
@@ -190,130 +135,102 @@ session_start();
     <section>
         <div class=" py-10 md:px-12 px-6">
             <h2 class="text-4xl font-bold text-gray-800 mb-6 text-center md:mb-11">
-                Our Popular <span
+                Our Recent <span
                     class="text-gradient bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">Courses</span>
             </h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                <div
-                    class="bg-white border border-blue-400 rounded-lg shadow-md p-4 hover:scale-105 transition-transform">
-                    <img src="./uploads/thumbnails/course-04.jpg" alt="Course Image" class="rounded-t-lg w-full">
-                    <div class="py-3">
-                        <p class="text-sm text-gray-500 flex items-center space-x-2">
-                            <span><i class="ri-calendar-line"></i> 20 Nov, 2023</span>
-                            <span><i class="ri-file-list-line"></i> 3 Curriculum</span>
-                            <span><i class="ri-group-line"></i> 5 Students</span>
-                        </p>
-                        <h3 class="text-lg font-semibold text-gray-800 mt-2">Master Web Development</h3>
-                        <p class="text-gray-600 text-sm mt-1">
-                            Learn the basics of web development, including HTML, CSS, and JavaScript.
-                        </p>
-                        <div class="flex items-center justify-between mt-3">
-                            <p class="text-blue-400 font-bold">$49</p>
-                            <p class="text-blue-400 flex items-center"><i class="ri-star-fill"></i> 4.8</p>
+            <div class="flex flex-wrap gap-6 justify-center items-center">
+                <?php
+                foreach($cours as $cou)
+                {
+                    if($cou instanceof coursVideo)
+                    {
+                        ?>
+                        
+                        <div class="bg-white rounded-2xl w-[40%] shadow-lg overflow-hidden transform transition-transform hover:scale-[1.02] hover:shadow-xl">
+                    <div class="relative">
+                        <div class="">
+                            <img src="./<?php echo $cou->getImagePath() ?>   " alt="Course thumbnail" class="h-[20%] w-full">
+                            
+                        </div>
+                        <div class="absolute top-4 right-4">
+                            <span class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-md">
+                                Video Course
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-sm font-medium px-3 py-1 rounded-full bg-blue-100 text-blue-600">
+                                Programming
+                            </span>
+                            <span class="text-sm font-medium px-3 py-1 rounded-full bg-purple-100 text-purple-600">
+                                4 Hours
+                            </span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3 text-gray-800">
+                        <?php echo $cou->getTitre() ?>
+                        </h3>
+                        <p class="text-gray-600 mb-6 line-clamp-2">
+                        <?php echo $cou->getDescription() ?>                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <img src="instructor-avatar.jpg" alt="Instructor" class="w-10 h-10 rounded-full">
+                                <span class="text-sm font-medium text-gray-700">
+                                    Prof. Sarah Johnson
+                                </span>
+                            </div>
+                            <button class="text-blue-500 hover:text-blue-700 font-medium">
+                                View Course →
+                            </button>
                         </div>
                     </div>
                 </div>
-
-                <div
-                    class="bg-white border border-blue-400 rounded-lg shadow-md p-4 hover:scale-105 transition-transform">
-                    <img src="./uploads/thumbnails/course-11.jpg" alt="Course Image" class="rounded-t-lg w-full">
-                    <div class="py-3">
-                        <p class="text-sm text-gray-500 flex items-center space-x-2">
-                            <span><i class="ri-calendar-line"></i> 18 Nov, 2023</span>
-                            <span><i class="ri-file-list-line"></i> 4 Curriculum</span>
-                            <span><i class="ri-group-line"></i> 8 Students</span>
-                        </p>
-                        <h3 class="text-lg font-semibold text-gray-800 mt-2">Business English Essentials</h3>
-                        <p class="text-gray-600 text-sm mt-1">
-                            Improve your business communication skills in English.
-                        </p>
-                        <div class="flex items-center justify-between mt-3">
-                            <p class="text-blue-400 font-bold">$39</p>
-                            <p class="text-blue-400 flex items-center"><i class="ri-star-fill"></i> 4.7</p>
-                        </div>
+                        <?php
+                    } else {
+                        ?>
+                <div class="bg-white rounded-2xl w-[40%] shadow-lg overflow-hidden transform transition-transform hover:scale-[1.02] hover:shadow-xl">
+                <div class="relative">
+                    <div class="">
+                       <img src="./<?php echo $cou->getImagePath() ?> " alt="">
+                    </div>
+                    <div class="absolute top-4 right-4">
+                        <span class="bg-emerald-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-md">
+                            Text Course
+                        </span>
                     </div>
                 </div>
-
-                <div
-                    class="bg-white border border-blue-400 rounded-lg shadow-md p-4 hover:scale-105 transition-transform">
-                    <img src="./uploads/thumbnails/course-02.jpg" alt="Course Image" class="rounded-t-lg w-full">
-                    <div class="py-3">
-                        <p class="text-sm text-gray-500 flex items-center space-x-2">
-                            <span><i class="ri-calendar-line"></i> 15 Nov, 2023</span>
-                            <span><i class="ri-file-list-line"></i> 5 Curriculum</span>
-                            <span><i class="ri-group-line"></i> 12 Students</span>
-                        </p>
-                        <h3 class="text-lg font-semibold text-gray-800 mt-2">Python Programming Basics</h3>
-                        <p class="text-gray-600 text-sm mt-1">
-                            A beginner-friendly course to learn Python programming.
-                        </p>
-                        <div class="flex items-center justify-between mt-3">
-                            <p class="text-blue-400 font-bold">Free</p>
-                            <p class="text-blue-400 flex items-center"><i class="ri-star-fill"></i> 4.9</p>
+                <div class="p-8">
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="text-sm font-medium px-3 py-1 rounded-full bg-emerald-100 text-emerald-600">
+                            Mathematics
+                        </span>
+                        <span class="text-sm font-medium px-3 py-1 rounded-full bg-teal-100 text-teal-600">
+                            12 Lessons
+                        </span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3 text-gray-800">
+                        <?php echo $cou->getTitre() ?>
+                    </h3>
+                    <p class="text-gray-600 mb-6 line-clamp-2">
+                        <?php echo $cou->getDescription() ?>   
+                    </p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <img src="instructor-avatar.jpg" alt="Instructor" class="w-10 h-10 rounded-full">
+                            <span class="text-sm font-medium text-gray-700">
+                                Dr. Michael Chen
+                            </span>
                         </div>
+                        <button class="text-emerald-500 hover:text-emerald-700 font-medium">
+                            View Course →
+                        </button>
                     </div>
                 </div>
-
-                <div
-                    class="bg-white border border-blue-400 rounded-lg shadow-md p-4 hover:scale-105 transition-transform">
-                    <img src="./uploads/thumbnails/course-04.jpg" alt="Course Image" class="rounded-t-lg w-full">
-                    <div class="py-3">
-                        <p class="text-sm text-gray-500 flex items-center space-x-2">
-                            <span><i class="ri-calendar-line"></i> 12 Nov, 2023</span>
-                            <span><i class="ri-file-list-line"></i> 6 Curriculum</span>
-                            <span><i class="ri-group-line"></i> 15 Students</span>
-                        </p>
-                        <h3 class="text-lg font-semibold text-gray-800 mt-2">Graphic Design Basics</h3>
-                        <p class="text-gray-600 text-sm mt-1">
-                            Learn to design beautiful graphics using Photoshop and Canva.
-                        </p>
-                        <div class="flex items-center justify-between mt-3">
-                            <p class="text-blue-400 font-bold">$29</p>
-                            <p class="text-blue-400 flex items-center"><i class="ri-star-fill"></i> 4.6</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    class="bg-white border border-blue-400 rounded-lg shadow-md p-4 hover:scale-105 transition-transform">
-                    <img src="./uploads/thumbnails/course-05.jpg" alt="Course Image" class="rounded-t-lg w-full">
-                    <div class="py-3">
-                        <p class="text-sm text-gray-500 flex items-center space-x-2">
-                            <span><i class="ri-calendar-line"></i> 10 Nov, 2023</span>
-                            <span><i class="ri-file-list-line"></i> 4 Curriculum</span>
-                            <span><i class="ri-group-line"></i> 10 Students</span>
-                        </p>
-                        <h3 class="text-lg font-semibold text-gray-800 mt-2">Digital Marketing Strategies</h3>
-                        <p class="text-gray-600 text-sm mt-1">
-                            Master digital marketing to grow your business online.
-                        </p>
-                        <div class="flex items-center justify-between mt-3">
-                            <p class="text-blue-400 font-bold">$35</p>
-                            <p class="text-blue-400 flex items-center"><i class="ri-star-fill"></i> 4.5</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    class="bg-white border border-blue-400 rounded-lg shadow-md p-4 hover:scale-105 transition-transform">
-                    <img src="./uploads/thumbnails/course-06.jpg" alt="Course Image" class="rounded-t-lg w-full">
-                    <div class="py-3">
-                        <p class="text-sm text-gray-500 flex items-center space-x-2">
-                            <span><i class="ri-calendar-line"></i> 8 Nov, 2023</span>
-                            <span><i class="ri-file-list-line"></i> 3 Curriculum</span>
-                            <span><i class="ri-group-line"></i> 7 Students</span>
-                        </p>
-                        <h3 class="text-lg font-semibold text-gray-800 mt-2">English Classes</h3>
-                        <p class="text-gray-600 text-sm mt-1">
-                            Discover the principles of user interface and experience design.
-                        </p>
-                        <div class="flex items-center justify-between mt-3">
-                            <p class="text-blue-400 font-bold">$25</p>
-                            <p class="text-blue-400 flex items-center"><i class="ri-star-fill"></i> 4.4</p>
-                        </div>
-                    </div>
-                </div>
+            </div>
+                        <?php
+                    }
+                }
+                ?>
             </div>
         </div>
 
