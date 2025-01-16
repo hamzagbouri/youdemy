@@ -57,7 +57,7 @@
                             {
                                 if($_SESSION['role'] == 'etudiant')
                                 {
-                                    echo "<a href='#'
+                                    echo "<a href='etudiant/cours.php'
                             class='text-gray-900 hover:text-blue-500 transition-colors'>Mes Cours</a>";
                                 } else {
                                     echo "<a href='enseignant/cours.php'

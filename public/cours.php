@@ -6,7 +6,11 @@ $cours = getCours::getCoursPagination(0);
 $categories = getCategory::getAllCategories();
 $totalCours = getCours::totalCours();
 $totalPage = ceil($totalCours/6);
-
+$isEtudiant = false;
+if($_SESSION['role'] == 'etudiant' )
+{
+    $isEtudiant = true;
+}
 
 if(isset($_GET['page']))
 {
@@ -143,49 +147,58 @@ if(isset($_POST['search']))
                         {
                             ?>
                             
-                            <div class="bg-white rounded-2xl w-[30%] shadow-lg overflow-hidden transform transition-transform hover:scale-[1.02] hover:shadow-xl">
-                        <div class="relative">
-                            <div class="">
-                                <img src="./<?php echo $cou->getImagePath() ?>   " alt="Course thumbnail" class="">
-                                
+                            <div class="bg-white rounded-2xl w-[30%] shadow-lg overflow-hidden transform transition-transform hover:scale-[1.02] hover:shadow-xl"> 
+                                <div class="relative"> 
+                                    <div class=""> 
+                                        <img src="./<?php echo $cou->getImagePath() ?>" alt="Course thumbnail" class=""> 
+                                    </div> 
+                                    <div class="absolute top-4 right-4"> 
+                                        <span class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-md"> 
+                                            Video Course 
+                                        </span> 
+                                    </div> 
+                                </div> 
+                                <div class="p-8"> 
+                                    <div class="flex items-center gap-2 mb-4"> 
+                                        <span class="text-sm font-medium px-3 py-1 rounded-full bg-blue-100 text-blue-600"> 
+                                            Programming 
+                                        </span> 
+                                        <span class="text-sm font-medium px-3 py-1 rounded-full bg-purple-100 text-purple-600"> 
+                                            4 Hours 
+                                        </span> 
+                                    </div> 
+                                    <h3 class="text-2xl font-bold mb-3 text-gray-800"> 
+                                        <?php echo $cou->getTitre() ?> 
+                                    </h3> 
+                                    <p class="text-gray-600 mb-6 line-clamp-2"> 
+                                        <?php echo $cou->getDescription() ?>
+                                    </p> 
+                                    <div class="flex items-center justify-between mb-4"> <!-- Added margin bottom -->
+                                        <div class="flex items-center gap-2"> 
+                                            <img src="./assets/images/userimage.png" alt="Instructor" class="w-10 h-10 object-contain rounded-full"> 
+                                            <span class="text-sm font-medium text-gray-700"> 
+                                            Dr. <?php echo ($cou->getFullName()) ?> 
+                                            </span> 
+                                        </div> 
+                                    </div>
+                                    
+                                    <!-- Actions Container -->
+                                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                                        <a href="viewCours.php?coursId=<?php echo $cou->getId();?>" class="text-blue-500 hover:text-blue-700 font-medium"> 
+                                            View Course → 
+                                        </a>
+                                        
+                                        <?php if(isset($isEtudiant) && $isEtudiant): ?>
+                                        <button 
+                                            onclick="confirmInscription(<?php echo $cou->getId();?>)"
+                                            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2">
+                                            <i class="ri-user-add-line"></i>
+                                            S'inscrire
+                                        </button>
+                                        <?php endif; ?>
+                                    </div>
+                                </div> 
                             </div>
-                            <div class="absolute top-4 right-4">
-                                <span class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-md">
-                                    Video Course
-                                </span>
-                            </div>
-                        </div>
-                        <div class="p-8">
-                            <div class="flex items-center gap-2 mb-4">
-                                <span class="text-sm font-medium px-3 py-1 rounded-full bg-blue-100 text-blue-600">
-                                    Programming
-                                </span>
-                                <span class="text-sm font-medium px-3 py-1 rounded-full bg-purple-100 text-purple-600">
-                                    4 Hours
-                                </span>
-                            </div>
-                            <h3 class="text-2xl font-bold mb-3 text-gray-800">
-                            <?php echo $cou->getTitre() ?>
-                            </h3>
-                            <p class="text-gray-600 mb-6 line-clamp-2">
-                            <?php echo $cou->getDescription() ?>                        </p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <img src="instructor-avatar.jpg" alt="Instructor" class="w-10 h-10 rounded-full">
-                                    <span class="text-sm font-medium text-gray-700">
-                                        Prof. Sarah 
-                                    </span>
-                                </div>
-                                <a href="viewCours.php?coursId=<?php echo $cou->getId();?>" class="bg-gray-200 rounded-xl px-2 py-1 text-blue-500 hover:text-blue-700 font-medium">
-                                    Inscrire
-                                </a>
-                                <a href="viewCours.php?coursId=<?php echo $cou->getId();?>" class="text-blue-500 hover:text-blue-700 font-medium">
-                                    View Course →
-                                </a>
-                                
-                            </div>
-                        </div>
-                    </div>
                             <?php
                         } else {
                             ?>
@@ -217,18 +230,27 @@ if(isset($_POST['search']))
                         </p>
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
-                                <img src="instructor-avatar.jpg" alt="Instructor" class="w-10 h-10 rounded-full">
+                                <img src="./assets/images/userimage.png" alt="Instructor" class="w-10 h-10 object-contain rounded-full">
                                 <span class="text-sm font-medium text-gray-700">
-                                    Dr. Michael Chen
+                                Dr. <?php echo ($cou->getFullName()) ?> 
                                 </span>
                             </div>
-                            <a href="viewCours.php?coursId=<?php echo $cou->getId();?>" class="bg-gray-200 rounded-xl px-2 py-1 text-blue-500 hover:text-blue-700 font-medium">
-                                    Inscrire
-                                </a>
-                                <a href="viewCours.php?coursId=<?php echo $cou->getId();?>" class="text-blue-500 hover:text-blue-700 font-medium">
-                                    View Course →
-                                </a>
                         </div>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                                        <a href="viewCours.php?coursId=<?php echo $cou->getId();?>" class="text-blue-500 hover:text-blue-700 font-medium"> 
+                                            View Course → 
+                                        </a>
+                                        
+                                        <?php if(isset($isEtudiant) && $isEtudiant): ?>
+                                        <button 
+                                            onclick="confirmInscription(<?php echo $cou->getId();?>)"
+                                            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2">
+                                            <i class="ri-user-add-line"></i>
+                                            S'inscrire
+                                        </button>
+                                        <?php endif; ?>
+                                    </div>
+                        
                     </div>
                 </div>
                             <?php
@@ -255,7 +277,25 @@ if(isset($_POST['search']))
     <!-- Footer Section -->
 
     <?php include 'footer.php'?>
-    <script src="assets/scripts/main.js"></script>
+    <script >
+        function confirmInscription(courseId) {
+    Swal.fire({
+        title: 'Confirmer l\'inscription',
+        text: "Voulez-vous vous inscrire à ce cours ?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, je m\'inscris!',
+        cancelButtonText: 'Annuler'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Perform the inscription
+            window.location.href = `../app/actions/inscrire/add.php?idCours=${courseId}`;
+        }
+    });
+}
+    </script>
 </body>
 
 

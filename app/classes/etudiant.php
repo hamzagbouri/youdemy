@@ -10,10 +10,10 @@ class Etudiant extends User {
     }
 
     
-    public function joinCourse($coursId) {
+    public static function joinCourse($idEtd,$coursId) {
         $pdo = Database::getInstance()->getConnection();
         $stmt = $pdo->prepare("INSERT INTO etudiant_cours (etudiant_id, cours_id) VALUES (:etudiantId, :coursId)");
-        $stmt->bindParam(':etudiantId', $this->id);
+        $stmt->bindParam(':etudiantId', $idEtd);
         $stmt->bindParam(':coursId', $coursId);
         return $stmt->execute();
     }
@@ -26,6 +26,12 @@ class Etudiant extends User {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public static function checkCourse($idEtd,$coursId)
+    {
+        $pdo = Database::getInstance()->getConnection();
+
+    }
+
 }
 
 

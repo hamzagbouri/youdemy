@@ -176,7 +176,7 @@ $categories = getCategory::getAllCategories();
                             <div class="flex items-center gap-2">
                                 <img src="instructor-avatar.jpg" alt="Instructor" class="w-10 h-10 rounded-full">
                                 <span class="text-sm font-medium text-gray-700">
-                                    Prof. Sarah Johnson
+                                    Prof. <?php echo $cou->getFullName() ?>
                                 </span>
                             </div>
                             <button class="text-blue-500 hover:text-blue-700 font-medium">
@@ -218,7 +218,7 @@ $categories = getCategory::getAllCategories();
                         <div class="flex items-center gap-2">
                             <img src="instructor-avatar.jpg" alt="Instructor" class="w-10 h-10 rounded-full">
                             <span class="text-sm font-medium text-gray-700">
-                                Dr. Michael Chen
+                                Dr. <?php echo $cou->getFullName() ?>
                             </span>
                         </div>
                         <button class="text-emerald-500 hover:text-emerald-700 font-medium">
