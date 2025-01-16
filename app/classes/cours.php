@@ -31,7 +31,7 @@ abstract class Cours  {
         public static function afficherCoursPagination($start)
         {
             $pdo = Database::getInstance()->getConnection();
-            $stmt = $pdo->prepare("SELECT * from CoursView LIMIT 6 OFFSET :offset");
+            $stmt = $pdo->prepare("SELECT * from CoursView where status = 'Accepte' LIMIT 6 OFFSET :offset");
             $stmt->bindValue(':offset',$start,PDO::PARAM_INT);
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -39,10 +39,10 @@ abstract class Cours  {
             foreach ($result as $row) {
                 if($row['contenu_type'] == 'video')
                 {
-                    $coursList[] = new coursVideo($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'] ,$row['video_url'],$row['contenu_type'],$row['status']);
+                    $coursList[] = new coursVideo($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'] ,$row['video_url'],$row['enseignant_id'] ,$row['contenu_type'],$row['status']);
                 } else 
                 {
-                    $coursList[] = new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'], $row['contenu'],$row['contenu_type'],$row['status']);
+                    $coursList[] = new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'], $row['contenu'],$row['enseignant_id'] ,$row['contenu_type'],$row['status']);
 
                 }
             }
@@ -52,29 +52,29 @@ abstract class Cours  {
      public static function afficherTous(){
   
             $pdo = Database::getInstance()->getConnection();
-            $stmt = $pdo->query("SELECT * FROM CoursView ");
+            $stmt = $pdo->query("SELECT * FROM CoursView where status = 'Accepte' ");
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
             $coursList = [];
             foreach ($result as $row) {
                 if($row['contenu_type'] == 'video')
                 {
-                    $coursList[] = new coursVideo($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'], $row['video_url'],$row['contenu_type']);
+                    $coursList[] = new coursVideo($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'], $row['video_url'],$row['enseignant_id'] ,$row['contenu_type'],$row['status']);
                 } else 
                 {
-                    $coursList[] = new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'], $row['contenu'],$row['contenu_type']);
+                    $coursList[] = new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'] ,$row['image_path'], $row['contenu'],$row['enseignant_id'] ,$row['contenu_type'],$row['status']);
 
                 }
             }
             return $coursList;
         
    }
-   public static function afficherParId($idCours)
+   public static function afficherParIdProf($idCours)
    {
       $idCours = (int) $idCours;
    
        $pdo = Database::getInstance()->getConnection();
-       $stmt = $pdo->prepare("SELECT * FROM CoursView WHERE id = :id");
+       $stmt = $pdo->prepare("SELECT * FROM CoursView WHERE id = :id and status ='Accepte'");
        $stmt->bindValue(':id', $idCours, PDO::PARAM_INT);
    
        $stmt->execute();
@@ -85,16 +85,38 @@ abstract class Cours  {
        }
    
        if ($row['contenu_type'] === 'video') {
-           return new coursVideo($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'],$row['enseignant_id'] ,$row['video_url'],$row['contenu_type']);
+           return new coursVideo($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'],$row['video_url'],$row['enseignant_id'],$row['contenu_type'],$row['status']);
            
        } else {
-           return new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'],$row['enseignant_id'] , $row['contenu'],$row['contenu_type']);
+           return new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'], $row['contenu'],$row['enseignant_id'],$row['contenu_type'],$row['status']);
+       }
+   }
+   public static function afficherParId($idCours)
+   {
+      $idCours = (int) $idCours;
+   
+       $pdo = Database::getInstance()->getConnection();
+       $stmt = $pdo->prepare("SELECT * FROM CoursView WHERE id = :id ");
+       $stmt->bindValue(':id', $idCours, PDO::PARAM_INT);
+   
+       $stmt->execute();
+       $row = $stmt->fetch(PDO::FETCH_ASSOC);
+   
+       if (!$row) {
+           throw new Exception("Course with ID $idCours not found.");
+       }
+   
+       if ($row['contenu_type'] === 'video') {
+           return new coursVideo($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'],$row['video_url'],$row['enseignant_id'],$row['contenu_type'],$row['status']);
+           
+       } else {
+           return new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'], $row['contenu'],$row['enseignant_id'],$row['contenu_type'],$row['status']);
        }
    }
    public static function afficherTousParProf($id_enseignant){
   
     $pdo = Database::getInstance()->getConnection();
-    $stmt = $pdo->prepare("SELECT * FROM Cours where enseignant_id  = :id");
+    $stmt = $pdo->prepare("SELECT * FROM Cours where enseignant_id  = :id ");
     $stmt->bindValue(':id',$id_enseignant,PDO::PARAM_INT);
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -103,10 +125,10 @@ abstract class Cours  {
     foreach ($result as $row) {
         if($row['contenu_type'] == 'video')
         {
-            $coursList[] = new coursVideo($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'],$row['enseignant_id'] ,$row['video_url'],$row['contenu_type']);
+            $coursList[] = new coursVideo($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'],$row['enseignant_id'] ,$row['video_url'],$row['contenu_type'],$row['status']);
         } else 
         {
-            $coursList[] = new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'],$row['enseignant_id'] , $row['contenu'],$row['contenu_type']);
+            $coursList[] = new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'],$row['enseignant_id'] , $row['contenu'],$row['contenu_type'],$row['status']);
 
         }
     }
@@ -145,7 +167,7 @@ abstract class Cours  {
     try {
         $pdo = Database::getInstance()->getConnection();
 
-        $stmt = $pdo->prepare("SELECT COUNT(*) as totalCours from CoursView ");
+        $stmt = $pdo->prepare("SELECT COUNT(*) as totalCours from CoursView where status = 'Accepte' ");
         $stmt->execute();
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
         return $res['totalCours'];
@@ -169,7 +191,7 @@ abstract class Cours  {
         return $stmt->execute();
     }
 
-    public function supprimer($id) {
+    public static function supprimer($id) {
         try {
             $db = Database::getInstance()->getConnection();
             $status = "Archive";

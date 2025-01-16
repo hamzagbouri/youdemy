@@ -182,7 +182,7 @@ $cours = getCours::getAllByTeacher();
             <!-- Course Status Badge -->
             <div class="flex justify-between items-center mb-3">
                 <span class="bg-blue-50 text-blue-600 text-xs font-medium px-2.5 py-1 rounded-full">
-                    Active
+                    <?php echo ($courItem->getStatus()) ?>
                 </span>
                 <span class="text-gray-500 text-sm">
                     <i class="ri-calendar-line"></i> 
@@ -231,17 +231,17 @@ $cours = getCours::getAllByTeacher();
 <script>
 function confirmDelete(courseId) {
     Swal.fire({
-        title: 'Are you sure?',
+        title: 'Delete Course?',
         text: "This action cannot be undone!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#003366',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.isConfirmed) {
-            // Add your delete course logic here
-            // window.location.href = `delete_course.php?id=${courseId}`;
+            window.location.href = `../../app/actions/cours/delete.php?idCours=${courseId}`;
         }
     });
 }

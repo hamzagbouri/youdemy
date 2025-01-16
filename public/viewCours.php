@@ -109,7 +109,7 @@ if($_SESSION['role'] == 'enseignant' && $cours->getEnseignantId() == $id)
                         </button>
                     </div>
                     <?php endif; ?>
-                    <h1 class="text-3xl font-bold text-gray-800 mb-4"><?php var_dump($cours->getStatus()) ?></h1>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-4"><?php echo $cours->getTitre() ?></h1>
                     <p class="text-gray-600 text-lg mb-6"><?php echo $cours->getDescription() ?>.</p>
                     
                     <!-- Instructor Info -->

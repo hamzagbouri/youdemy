@@ -28,9 +28,10 @@ class getCours{
         return Cours::searchCours($data);
     }
     static function getById($id)
-    {;
+    {
         return Cours::afficherParId($id);
     }
+   
 
   
 }

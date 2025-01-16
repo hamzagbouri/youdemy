@@ -136,97 +136,106 @@ if(isset($_POST['search']))
             <div class="flex flex-wrap gap-6 justify-center items-center">
                 <?php
                 
-                foreach($cours as $cou)
-                {
-                    
-                    if($cou instanceof coursVideo)
+                    foreach($cours as $cou)
                     {
-                        ?>
-                        
-                        <div class="bg-white rounded-2xl w-[30%] shadow-lg overflow-hidden transform transition-transform hover:scale-[1.02] hover:shadow-xl">
+                       
+                        if($cou instanceof coursVideo)
+                        {
+                            ?>
+                            
+                            <div class="bg-white rounded-2xl w-[30%] shadow-lg overflow-hidden transform transition-transform hover:scale-[1.02] hover:shadow-xl">
+                        <div class="relative">
+                            <div class="">
+                                <img src="./<?php echo $cou->getImagePath() ?>   " alt="Course thumbnail" class="">
+                                
+                            </div>
+                            <div class="absolute top-4 right-4">
+                                <span class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-md">
+                                    Video Course
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-8">
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="text-sm font-medium px-3 py-1 rounded-full bg-blue-100 text-blue-600">
+                                    Programming
+                                </span>
+                                <span class="text-sm font-medium px-3 py-1 rounded-full bg-purple-100 text-purple-600">
+                                    4 Hours
+                                </span>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-3 text-gray-800">
+                            <?php echo $cou->getTitre() ?>
+                            </h3>
+                            <p class="text-gray-600 mb-6 line-clamp-2">
+                            <?php echo $cou->getDescription() ?>                        </p>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <img src="instructor-avatar.jpg" alt="Instructor" class="w-10 h-10 rounded-full">
+                                    <span class="text-sm font-medium text-gray-700">
+                                        Prof. Sarah 
+                                    </span>
+                                </div>
+                                <a href="viewCours.php?coursId=<?php echo $cou->getId();?>" class="bg-gray-200 rounded-xl px-2 py-1 text-blue-500 hover:text-blue-700 font-medium">
+                                    Inscrire
+                                </a>
+                                <a href="viewCours.php?coursId=<?php echo $cou->getId();?>" class="text-blue-500 hover:text-blue-700 font-medium">
+                                    View Course →
+                                </a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                            <?php
+                        } else {
+                            ?>
+                    <div class="bg-white rounded-2xl w-[30%] shadow-lg overflow-hidden transform transition-transform hover:scale-[1.02] hover:shadow-xl">
                     <div class="relative">
                         <div class="">
-                            <img src="./<?php echo $cou->getImagePath() ?>   " alt="Course thumbnail" class="">
-                            
+                           <img src="./<?php echo $cou->getImagePath() ?> " alt="">
                         </div>
                         <div class="absolute top-4 right-4">
-                            <span class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-md">
-                                Video Course
+                            <span class="bg-emerald-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-md">
+                                Text Course
                             </span>
                         </div>
                     </div>
                     <div class="p-8">
                         <div class="flex items-center gap-2 mb-4">
-                            <span class="text-sm font-medium px-3 py-1 rounded-full bg-blue-100 text-blue-600">
-                                Programming
+                            <span class="text-sm font-medium px-3 py-1 rounded-full bg-emerald-100 text-emerald-600">
+                                Mathematics
                             </span>
-                            <span class="text-sm font-medium px-3 py-1 rounded-full bg-purple-100 text-purple-600">
-                                4 Hours
+                            <span class="text-sm font-medium px-3 py-1 rounded-full bg-teal-100 text-teal-600">
+                                12 Lessons
                             </span>
                         </div>
                         <h3 class="text-2xl font-bold mb-3 text-gray-800">
-                        <?php echo $cou->getTitre() ?>
+                            <?php echo $cou->getTitre() ?>
                         </h3>
                         <p class="text-gray-600 mb-6 line-clamp-2">
-                        <?php echo $cou->getDescription() ?>                        </p>
+                            <?php echo $cou->getDescription() ?>   
+                        </p>
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
                                 <img src="instructor-avatar.jpg" alt="Instructor" class="w-10 h-10 rounded-full">
                                 <span class="text-sm font-medium text-gray-700">
-                                    Prof. Sarah Johnson
+                                    Dr. Michael Chen
                                 </span>
                             </div>
-                            <a href="viewCours.php?coursId=<?php echo $cou->getId();?>" class="text-blue-500 hover:text-blue-700 font-medium">
-                                View Course →
-                            </a>
+                            <a href="viewCours.php?coursId=<?php echo $cou->getId();?>" class="bg-gray-200 rounded-xl px-2 py-1 text-blue-500 hover:text-blue-700 font-medium">
+                                    Inscrire
+                                </a>
+                                <a href="viewCours.php?coursId=<?php echo $cou->getId();?>" class="text-blue-500 hover:text-blue-700 font-medium">
+                                    View Course →
+                                </a>
                         </div>
                     </div>
                 </div>
-                        <?php
-                    } else {
-                        ?>
-                <div class="bg-white rounded-2xl w-[30%] shadow-lg overflow-hidden transform transition-transform hover:scale-[1.02] hover:shadow-xl">
-                <div class="relative">
-                    <div class="">
-                       <img src="./<?php echo $cou->getImagePath() ?> " alt="">
-                    </div>
-                    <div class="absolute top-4 right-4">
-                        <span class="bg-emerald-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-md">
-                            Text Course
-                        </span>
-                    </div>
-                </div>
-                <div class="p-8">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="text-sm font-medium px-3 py-1 rounded-full bg-emerald-100 text-emerald-600">
-                            Mathematics
-                        </span>
-                        <span class="text-sm font-medium px-3 py-1 rounded-full bg-teal-100 text-teal-600">
-                            12 Lessons
-                        </span>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-3 text-gray-800">
-                        <?php echo $cou->getTitre() ?>
-                    </h3>
-                    <p class="text-gray-600 mb-6 line-clamp-2">
-                        <?php echo $cou->getDescription() ?>   
-                    </p>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <img src="instructor-avatar.jpg" alt="Instructor" class="w-10 h-10 rounded-full">
-                            <span class="text-sm font-medium text-gray-700">
-                                Dr. Michael Chen
-                            </span>
-                        </div>
-                        <button class="text-emerald-500 hover:text-emerald-700 font-medium">
-                            View Course →
-                        </button>
-                    </div>
-                </div>
-            </div>
-                        <?php
+                            <?php
+                        }
                     }
-                }
+                
+                
                 ?>
             </div>
            
