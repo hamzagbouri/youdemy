@@ -13,12 +13,18 @@ $idCours = trim(htmlspecialchars($_GET['coursId']));
 $id = $_SESSION['logged_id'];
 $categories = getCategory::getAllCategories();
 $cours = getCours::getById($idCours);
-if($_SESSION['role'] == 'enseignant' && $cours->getEnseignantId() == $id)
+
+if($_SESSION['role'] == 'enseignant')
 {
-    $mine = true;
+   
+    $cours = getCours::getByIdProf($idCours);
+    if($cours->getEnseignantId() == $id)
+    {
+        $mine = true;
+    }
 }
 
-var_dump($cours);
+
 
 
 ?>

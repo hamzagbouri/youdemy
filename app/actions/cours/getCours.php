@@ -31,6 +31,10 @@ class getCours{
     {
         return Cours::afficherParId($id);
     }
+    static function getByIdProf($id)
+    {
+        return Cours::afficherParIdProf($id);
+    }
    
 
   

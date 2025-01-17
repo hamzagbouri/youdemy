@@ -78,12 +78,11 @@ abstract class Cours  {
    }
    public static function afficherParIdProf($idCours)
    {
-      $idCours = (int) $idCours;
+      $idCourss = (int) $idCours;
    
        $pdo = Database::getInstance()->getConnection();
-       $stmt = $pdo->prepare("SELECT * FROM CoursView WHERE id = :id and status ='Accepte'");
-       $stmt->bindValue(':id', $idCours, PDO::PARAM_INT);
-   
+       $stmt = $pdo->prepare("SELECT * FROM Cours WHERE id = :id ");
+       $stmt->bindValue(':id', $idCourss, PDO::PARAM_INT);
        $stmt->execute();
        $row = $stmt->fetch(PDO::FETCH_ASSOC);
    
@@ -93,14 +92,12 @@ abstract class Cours  {
    
        if($row['contenu_type'] == 'video')
                 {
-                    $cour = new coursVideo($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'] ,$row['video_url'],$row['enseignant_id'] ,$row['contenu_type'],$row['status']);
-                    $cour->setFullName($row['fullName']);
-                    $coursList[]=$cour;
+                    return new coursVideo($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'] ,$row['video_url'],$row['enseignant_id'] ,$row['contenu_type'],$row['status']);
+                    
                 } else 
                 {
-                    $cour = new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'], $row['contenu'],$row['enseignant_id'] ,$row['contenu_type'],$row['status']);
-                    $cour->setFullName($row['fullName']);
-                    $coursList[]=$cour;
+                    return new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'], $row['contenu'],$row['enseignant_id'] ,$row['contenu_type'],$row['status']);
+
                 }
    }
    public static function afficherParId($idCours)
@@ -143,12 +140,12 @@ abstract class Cours  {
         if($row['contenu_type'] == 'video')
                 {
                     $cour = new coursVideo($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'] ,$row['video_url'],$row['enseignant_id'] ,$row['contenu_type'],$row['status']);
-                    $cour->setFullName($row['fullName']);
+                    
                     $coursList[]=$cour;
                 } else 
                 {
                     $cour = new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'], $row['contenu'],$row['enseignant_id'] ,$row['contenu_type'],$row['status']);
-                    $cour->setFullName($row['fullName']);
+               
                     $coursList[]=$cour;
                 }
     }
