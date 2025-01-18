@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 require_once __DIR__ . '/../../classes/Cours.php';
 
 class getCours{
@@ -11,9 +11,8 @@ class getCours{
     {
         return Cours::afficherTousAdmin();
     }
-    static function getAllByTeacher()
+    static function getAllByTeacher($id)
     {   
-        $id = trim(htmlspecialchars($_SESSION['logged_id']));
         return Cours::afficherTousParProf($id);
     }
     static function getTwo()
@@ -38,6 +37,10 @@ class getCours{
     static function getByIdProf($id)
     {
         return Cours::afficherParIdProf($id);
+    }
+    static function getAllByStudent($idS)
+    {
+        return Cours::afficherTousParEtudiant($idS);
     }
    
 

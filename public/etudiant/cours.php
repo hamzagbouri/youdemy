@@ -1,4 +1,5 @@
 <?php?><?php
+session_start();
 require_once dirname(__DIR__, 3) . '/Youdemy/app/actions/categorie/get.php';
 require_once dirname(__DIR__, 3) . '/Youdemy/app/actions/cours/getCours.php';
 if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'etudiant')
@@ -6,9 +7,9 @@ if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'etudiant')
         header('Location: ../index.php');
     
 }
-
+$idStudent = $_SESSION['logged_id'];
 $categories = getCategory::getAllCategories();
-$cours = getCours::getAllByTeacher();
+$allCours = getCours::getAllByStudent($idStudent);
 
 
 
@@ -140,79 +141,82 @@ $cours = getCours::getAllByTeacher();
         </button>
 
         <!-- Existing Course Card -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <?php foreach($cours as $courItem) { ?>
-    <div class="group relative bg-white border border-blue-200 rounded-xl shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300">
-        <!-- Course Image Container -->
-        <div class="relative">
-            <img 
-                src="../<?php echo $courItem->getImagePath();?>" 
-                alt="Course Image" 
-                class="w-full h-48 object-cover"
-            >
-            <!-- Overlay Actions -->
-            <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
-                <a 
-                   href="../viewCours.php?coursId=<?php echo $courItem->getId();?>"
-                    class="bg-white text-blue-600 p-2 rounded-full hover:bg-blue-50 transition-colors">
-                    <i class="ri-eye-line text-xl"></i>
-    </a>
-                <button 
-                    onclick="confirmDelete(<?php echo $courItem->getId();?>)"
-                    class="bg-white text-red-500 p-2 rounded-full hover:bg-red-50 transition-colors">
-                    <i class="ri-delete-bin-line text-xl"></i>
-                </button>
-            </div>
-        </div>
+        <div class="overflow-x-auto bg-white rounded-lg shadow">
+    <table class="min-w-full table-auto">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cours</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Enseignant</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date d'inscription</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            <?php foreach ($allCours as $cours): ?>
+                <tr class="hover:bg-gray-50 transition-colors duration-200">
+                    <!-- Course Info -->
+                    <td class="px-6 py-4">
+                        <div class="flex items-center">
+                            <div class="h-12 w-12 flex-shrink-0">
+                                <img class="h-12 w-12 rounded-lg object-cover" 
+                                     src="../<?php echo htmlspecialchars($cours->getImagePath()); ?>" 
+                                     alt="<?php echo htmlspecialchars($cours->getTitre()); ?>">
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">
+                                    <?php echo htmlspecialchars($cours->getTitre()); ?>
+                                </div>
+                                <div class="text-sm text-gray-500">
+                                    <?php echo htmlspecialchars(substr($cours->getDescription(), 0, 60)) . '...'; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
 
-        <!-- Course Content -->
-        <div class="p-5">
-            <!-- Course Status Badge -->
-            <div class="flex justify-between items-center mb-3">
-                <span class="bg-blue-50 text-blue-600 text-xs font-medium px-2.5 py-1 rounded-full">
-                    <?php echo ($courItem->getStatus()) ?>
-                </span>
-                <span class="text-gray-500 text-sm">
-                    <i class="ri-calendar-line"></i> 
-                    <?php echo date('d M, Y'); ?>
-                </span>
-            </div>
+                    <!-- Teacher -->
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900"><?php echo htmlspecialchars($cours->getFullName()); ?></div>
+                    </td>
 
-            <!-- Course Title -->
-            <h3 class="text-xl font-semibold text-gray-800 mb-2 line-clamp-1">
-                <?php echo $courItem->getTitre();?>
-            </h3>
+                    <!-- Content Type -->
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
+                            <?php echo $cours->getType() === 'video' 
+                                ? 'bg-purple-100 text-purple-800' 
+                                : 'bg-blue-100 text-blue-800'; ?>">
+                            <?php echo $cours->getType() === 'video' ? 'video' : 'text'; ?>
+                        </span>
+                    </td>
 
-            <!-- Course Description -->
-            <p class="text-gray-600 text-sm mb-4 line-clamp-2">
-                <?php echo $courItem->getDescription();?>
-            </p>
+                    <!-- Enrollment Date -->
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <?php echo date('d/m/Y'); // Replace with actual enrollment date if available ?>
+                        </div>
+                    </td>
 
-            <!-- Course Stats -->
-            <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
-                <span class="flex items-center">
-                    <i class="ri-file-list-line mr-1"></i> 3 Lessons
-                </span>
-                <span class="flex items-center">
-                    <i class="ri-time-line mr-1"></i> 2.5 hrs
-                </span>
-                <span class="flex items-center">
-                    <i class="ri-group-line mr-1"></i> 7 Students
-                </span>
-            </div>
-
-            <!-- Course Footer -->
-            <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                <div class="flex items-center space-x-1">
-                    <i class="ri-star-fill text-yellow-400"></i>
-                    <span class="font-semibold">4.4</span>
-                    <span class="text-gray-500 text-sm">(128)</span>
-                </div>
-                <span class="text-blue-600 font-semibold">Free</span>
-            </div>
-        </div>
-    </div>
-    <?php } ?>
+                    <!-- View Action -->
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <a href="../viewCours.php?coursId=<?php echo $cours->getId(); ?>" 
+                           class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors duration-200">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                            Voir le cours
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
 </div>
 
 <!-- Delete Confirmation Modal Script -->
@@ -242,105 +246,7 @@ function editCourse(courseId) {
     </div>
 
     <!-- Modal for Adding a Course -->
-    <div id="addCourseModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-lg shadow-lg w-[80%] p-6 overflow-y-auto h-[80%]">
-            <h2 class="text-lg font-semibold text-gray-800">Add New Course</h2>
-            <form id="addCourseForm" class="mt-4 space-y-4"  enctype="multipart/form-data">
-                <div>
-                    <label for="courseTitle" class="block text-sm font-medium text-gray-700">Title</label>
-                    <input 
-                        type="text" 
-                        id="courseTitle" 
-                        name="title" 
-                        class="block w-full  px-3 py-2 mt-1 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
-                <div>
-                    <label for="courseDescription" class="block  text-sm font-medium text-gray-700">Description</label>
-                    <textarea 
-                        id="courseDescription" 
-                        name="description" 
-                        class="block w-full mt-1 border px-3 py-2 h-32 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                    </textarea>
-                </div>
-                <div>
-                    <label for="courseImage" class="block  text-sm font-medium text-gray-700">Image</label>
-                    <input 
-                        type="file" 
-                        id="courseImage" 
-                        name="image" 
-                        accept="image/*"
-                        class="block w-full mt-1 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">                </div>
-                <div>
-                    <label for="courseTags" class="block text-sm font-medium text-gray-700">Tags</label>
-                    <input 
-                        type="text" 
-                        id="courseTags" 
-                        name="tags" 
-                        class="block w-full px-3 py-2 mt-1 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
-                        placeholder="Type and press Enter to add tags">
-                    <div id="tagsList" class="hidden bg-white border mt-1 rounded-md shadow-md overflow-y-auto max-h-32 w-full"></div>
-                    <div id="selectedTags" class="mt-2 flex flex-wrap gap-2"></div>
-                    <!-- <input type="hidden" name="tags[]" id="tags"> -->
-                </div>
-                <div>
-                    <label for="courseCategorie" class="block text-sm font-medium text-gray-700">Categorie</label>
-                    <select 
-                        id="courseCategorie" 
-                        name="categorie" 
-                        class="block px-3 py-2 w-full mt-1 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                        <?php
-                            foreach($categories as $categorie)
-                            {
-                                echo "<option value ='".$categorie->getId()."'>".$categorie->getTitre()."</option>";
-                            }
-                        ?>
-                    </select>
-                </div>
-                <div>
-                    <label for="courseType" class="block text-sm font-medium text-gray-700">Type</label>
-                    <select 
-                        id="courseType" 
-                        name="type" 
-                        class="block px-3 py-2 w-full mt-1 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                        onchange="toggleContentField()">
-                        <option value="text">Text</option>
-                        <option value="video">Video</option>
-                    </select>
-                </div>
-                <div id="textContentField" class="hidden">
-                    <label for="courseText" class="block text-sm font-medium text-gray-700">Text Content</label>
-                    <textarea 
-                        id="courseText" 
-                        name="content" 
-                        class="block w-full mt-1 border x-3 py-2 h-32 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                    </textarea>
-                </div>
-                <div id="videoContentField" class="hidden">
-                    <label for="courseVideo" class="block text-sm font-medium text-gray-700">Video File</label>
-                    <input 
-                        type="file" 
-                        id="courseVideo" 
-                        name="video" 
-                        accept="video/*"
-                        class="block w-full mt-1 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                </div>
-                <div class="flex justify-end space-x-4">
-                    <button 
-                        type="button" 
-                        class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow-md hover:bg-gray-400 transition"
-                        onclick="toggleModal(false)">
-                        Cancel
-                    </button>
-                    <button 
-                    id="addCours"
-                        type="submit" 
-                        class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition">
-                        Add Course
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
+    
 </section>
 
 <script src = "cours.js">

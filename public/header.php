@@ -53,7 +53,7 @@
                             class="text-gray-900 hover:text-blue-500 transition-colors">Contact</a>
                             <?php 
                             if(isset($_SESSION['logged_id']))
-
+                
                             {
                                 if($_SESSION['role'] == 'etudiant')
                                 {

@@ -1,16 +1,19 @@
 <?php
-
 require_once __DIR__ . '../../app/actions/cours/getCours.php';
 require_once __DIR__ . '../../app/actions/categorie/get.php';
+require_once __DIR__ . '../../app/actions/etudiant/coursEtudiant.php';
 $cours = getCours::getCoursPagination(0);
 $categories = getCategory::getAllCategories();
 $totalCours = getCours::totalCours();
 $totalPage = ceil($totalCours/6);
 $isEtudiant = false;
-if($_SESSION['role'] == 'etudiant' )
+
+if(isset($_SESSION['role']) && $_SESSION['role'] == 'etudiant' )
 {
     $isEtudiant = true;
+    $idLog = $_SESSION['logged_id'];
 }
+
 
 if(isset($_GET['page']))
 {
@@ -188,7 +191,7 @@ if(isset($_POST['search']))
                                             View Course → 
                                         </a>
                                         
-                                        <?php if(isset($isEtudiant) && $isEtudiant): ?>
+                                        <?php if(isset($isEtudiant) && $isEtudiant && (coursEtudiant::checkInscription($cou->getId(),$idLog) == 0 )): ?>
                                         <button 
                                             onclick="confirmInscription(<?php echo $cou->getId();?>)"
                                             class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2">
@@ -241,8 +244,8 @@ if(isset($_POST['search']))
                                             View Course → 
                                         </a>
                                         
-                                        <?php if(isset($isEtudiant) && $isEtudiant): ?>
-                                        <button 
+                                        <?php if(isset($isEtudiant) && $isEtudiant && (coursEtudiant::checkInscription($cou->getId(),$idLog) == 0 )): ?>
+                                            <button 
                                             onclick="confirmInscription(<?php echo $cou->getId();?>)"
                                             class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2">
                                             <i class="ri-user-add-line"></i>

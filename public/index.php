@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . '../../app/actions/cours/getCours.php';
 require_once __DIR__ . '../../app/actions/categorie/get.php';
 $cours = getCours::getTwo();

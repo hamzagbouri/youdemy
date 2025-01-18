@@ -1,4 +1,5 @@
 <?php?><?php
+session_start();
 require_once __DIR__. '/../app/actions/categorie/get.php';
 require_once __DIR__ . '/../app/actions/cours/getCours.php';
 if(!isset($_SESSION['logged_id']) || !isset($_GET['coursId']))

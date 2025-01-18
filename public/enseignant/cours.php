@@ -6,9 +6,9 @@ if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'enseignant')
         header('Location: ../index.php');
     
 }
-
+$idE = $_SESSION['logged_id'];
 $categories = getCategory::getAllCategories();
-$cours = getCours::getAllByTeacher();
+$cours = getCours::getAllByTeacher($idE);
 
 
 

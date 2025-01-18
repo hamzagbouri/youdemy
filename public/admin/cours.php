@@ -161,10 +161,6 @@ if (isset($_SESSION['message'])) {
                         <button class="flex gap-2 items-center border px-4 py-2 rounded-lg text-[#0E2354] ">
                             <img src="./img/Downlaod.svg" alt="">Export
                         </button>
-                        <button id="add-etd" 
-                            class="flex gap-2 items-center bg-primary px-4 py-2 rounded-lg text-white ">
-                            <img src="./img/_Avatar add button.svg" alt="">New Cars
-                        </button>
                     </div>
                 </div>
 
@@ -272,9 +268,9 @@ if (isset($_SESSION['message'])) {
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex space-x-2">
                             <?php if ($cours->getStatus() === 'En Attente'): ?>
-                                <form method="POST" action="cours_action.php" class="inline">
+                                <form method="POST" action="../../app/actions/cours/updateStatus.php" class="inline">
                                     <input type="hidden" name="cours_id" value="<?php echo $cours->getId(); ?>">
-                                    <input type="hidden" name="action" value="accept">
+                                    <input type="hidden" name="action" value="Accepte">
                                     <button type="submit" class="inline-flex items-center px-3 py-1 border border-green-500 text-green-600 
                                            hover:bg-green-50 rounded-md text-sm font-medium transition-colors duration-200">
                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -283,9 +279,9 @@ if (isset($_SESSION['message'])) {
                                         Accepter
                                     </button>
                                 </form>
-                                <form method="POST" action="cours_action.php" class="inline">
+                                <form method="POST" action="../../app/actions/cours/updateStatus.php" class="inline">
                                     <input type="hidden" name="cours_id" value="<?php echo $cours->getId(); ?>">
-                                    <input type="hidden" name="action" value="archive">
+                                    <input type="hidden" name="action" value="Archive">
                                     <button type="submit" class="inline-flex items-center px-3 py-1 border border-gray-500 text-gray-600 
                                            hover:bg-gray-50 rounded-md text-sm font-medium transition-colors duration-200">
                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -295,9 +291,9 @@ if (isset($_SESSION['message'])) {
                                     </button>
                                 </form>
                             <?php elseif ($cours->getStatus() === 'Archive'): ?>
-                                <form method="POST" action="cours_action.php" class="inline">
+                                <form method="POST" action="../../app/actions/cours/updateStatus.php" class="inline">
                                     <input type="hidden" name="cours_id" value="<?php echo $cours->getId(); ?>">
-                                    <input type="hidden" name="action" value="accept">
+                                    <input type="hidden" name="action" value="Accepte">
                                     <button type="submit" class="inline-flex items-center px-3 py-1 border border-green-500 text-green-600 
                                            hover:bg-green-50 rounded-md text-sm font-medium transition-colors duration-200">
                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -307,9 +303,9 @@ if (isset($_SESSION['message'])) {
                                     </button>
                                 </form>
                             <?php elseif ($cours->getStatus() === 'Accepte'): ?>
-                                <form method="POST" action="cours_action.php" class="inline">
+                                <form method="POST" action="../../app/actions/cours/updateStatus.php" class="inline">
                                     <input type="hidden" name="cours_id" value="<?php echo $cours->getId(); ?>">
-                                    <input type="hidden" name="action" value="archive">
+                                    <input type="hidden" name="action" value="Archive">
                                     <button type="submit" class="inline-flex items-center px-3 py-1 border border-gray-500 text-gray-600 
                                            hover:bg-gray-50 rounded-md text-sm font-medium transition-colors duration-200">
                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -337,192 +333,9 @@ if (isset($_SESSION['message'])) {
 
        
 
-        <div id="carModal-add" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
-    <div class="bg-white h-[80%] rounded-lg w-[60%] p-6 overflow-y-auto">
-        <h2 class="text-2xl font-semibold mb-4">Add New Cars</h2>
-        <form id="carForm" action="../../app/actions/addCar.php" method="POST" enctype="multipart/form-data">
-            <div id="carsContainer" class="space-y-4">
-                <!-- First Car Fields -->
-                <div class="car-fields space-y-4">
-                    <h3 class="text-lg font-medium text-gray-800">Car 1</h3>
-                    <div class="flex flex-col">
-                        <label for="marque" class="text-sm font-medium text-gray-700">Marque</label>
-                        <input type="text" name="marque[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter marque" required>
-                    </div>
-                    <div class="flex flex-col">
-                        <label for="modele" class="text-sm font-medium text-gray-700">Modele</label>
-                        <input type="text" name="modele[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter modele" required>
-                    </div>
-                    <div class="flex flex-col">
-                        <label for="annee" class="text-sm font-medium text-gray-700">Annee</label>
-                        <input type="number" name="annee[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter annee" required>
-                    </div>
-                    <div class="flex flex-col">
-                        <label for="prix" class="text-sm font-medium text-gray-700">Prix</label>
-                        <input type="number" name="prix[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter prix" required>
-                    </div>
-                    <div class="flex flex-col">
-                        <label for="image" class="text-sm font-medium text-gray-700">Car Image</label>
-                        <input type="file" name="image[]" accept="image/*" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" required>
-                    </div>
-                    <div class="flex flex-col">
-                        <label for="disponibilite" class="text-sm font-medium text-gray-700">Disponibilite</label>
-                        <select name="disponibilite[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" required>
-                            <option value="1">Available</option>
-                            <option value="0">Not Available</option>
-                        </select>
-                    </div>
-                    <div class="flex flex-col">
-                        <label for="category_id" class="text-sm font-medium text-gray-700">Category</label>
-                        <select name="category_id[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" required>
-                            <option value="" checked disabled>Select a Category</option>
-                            <?php 
-                            foreach($allCategories as $cat)
-                            echo "<option value='".$cat['id']."'>".$cat['nom']."</option>"
-                            ?>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <input type="hidden" id="carCount" name="carCount" value="1">
-            
-            <div class="mt-4">
-                <button type="button" id="addCarButton" class="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Add Another Car</button>
-            </div>
-
-            <div class="mt-6 flex justify-end gap-4">
-                <button type="button" id="closeModal" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">Cancel</button>
-                <button type="submit" name="submit" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark">Submit Cars</button>
-            </div>
-        </form>
-    </div>
 </div>
 
-                <script>
-                // Get modal elements
-                const modal = document.getElementById('carModal-add');
-                const addCarButton = document.getElementById('add-etd');
-                const closeModalButton = document.getElementById('closeModal');
-                const carsContainer = document.getElementById('carsContainer');
-                const addAnotherCarButton = document.getElementById('addCarButton');
-                const carCountInput = document.getElementById('carCount');
-
-                let carCount = 1;
-
-                // Function to reset the modal to its initial state
-                function resetModal() {
-                    carCount = 1;
-                    carCountInput.value = carCount;
-
-                    // Reset to only the first set of inputs
-                    carsContainer.innerHTML = `
-                        <div class="car-fields space-y-4">
-                            <h3 class="text-lg font-medium text-gray-800">Car 1</h3>
-                            <div class="flex flex-col">
-                                <label for="marque" class="text-sm font-medium text-gray-700">Marque</label>
-                                <input type="text" name="marque[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter marque" required>
-                            </div>
-                            <div class="flex flex-col">
-                                <label for="modele" class="text-sm font-medium text-gray-700">Modele</label>
-                                <input type="text" name="modele[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter modele" required>
-                            </div>
-                            <div class="flex flex-col">
-                                <label for="annee" class="text-sm font-medium text-gray-700">Annee</label>
-                                <input type="number" name="annee[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter annee" required>
-                            </div>
-                            <div class="flex flex-col">
-                                <label for="prix" class="text-sm font-medium text-gray-700">Prix</label>
-                                <input type="number" name="prix[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter prix" required>
-                            </div>
-                            <div class="flex flex-col">
-                                <label for="image" class="text-sm font-medium text-gray-700">Car Image</label>
-                                <input type="file" name="image[]" accept="image/*" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" required>
-                            </div>
-                            <div class="flex flex-col">
-                                <label for="disponibilite" class="text-sm font-medium text-gray-700">Disponibilite</label>
-                                <select name="disponibilite[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" required>
-                                    <option value="1">Available</option>
-                                    <option value="0">Not Available</option>
-                                </select>
-                            </div>
-                            <div class="flex flex-col">
-                                <label for="category_id" class="text-sm font-medium text-gray-700">Category</label>
-                                <select name="category_id[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" required>
-                                  <option value="" checked disabled>Select a Category</option>
-                                    <?php 
-                                    foreach($allCategories as $cat)
-                                    echo "<option value='".$cat['id']."'>".$cat['nom']."</option>"
-                                    ?>
-                                </select>
-                            </div>
-                        </div>
-                    `;
-                }
-
-                // Show modal
-                addCarButton.addEventListener('click', () => {
-                    resetModal(); // Reset modal when showing it
-                    modal.classList.remove('hidden');
-                });
-
-                // Close modal
-                closeModalButton.addEventListener('click', () => {
-                    resetModal(); // Reset modal when closing it
-                    modal.classList.add('hidden');
-                });
-
-                // Add another car
-                addAnotherCarButton.addEventListener('click', () => {
-                    carCount += 1;
-                    carCountInput.value = carCount;
-
-                    const newCarFields = `
-                        <div class="car-fields space-y-4">
-                            <h3 class="text-lg font-medium text-gray-800">Car ${carCount}</h3>
-                            <div class="flex flex-col">
-                                <label for="marque" class="text-sm font-medium text-gray-700">Marque</label>
-                                <input type="text" name="marque[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter marque" required>
-                            </div>
-                            <div class="flex flex-col">
-                                <label for="modele" class="text-sm font-medium text-gray-700">Modele</label>
-                                <input type="text" name="modele[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter modele" required>
-                            </div>
-                            <div class="flex flex-col">
-                                <label for="annee" class="text-sm font-medium text-gray-700">Annee</label>
-                                <input type="number" name="annee[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter annee" required>
-                            </div>
-                            <div class="flex flex-col">
-                                <label for="prix" class="text-sm font-medium text-gray-700">Prix</label>
-                                <input type="number" name="prix[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Enter prix" required>
-                            </div>
-                            <div class="flex flex-col">
-                                <label for="image" class="text-sm font-medium text-gray-700">Car Image</label>
-                                <input type="file" name="image[]" accept="image/*" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" required>
-                            </div>
-                            <div class="flex flex-col">
-                                <label for="disponibilite" class="text-sm font-medium text-gray-700">Disponibilite</label>
-                                <select name="disponibilite[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" required>
-                                    <option value="1">Available</option>
-                                    <option value="0">Not Available</option>
-                                </select>
-                            </div>
-                            <div class="flex flex-col">
-                                <label for="category_id" class="text-sm font-medium text-gray-700">Category</label>
-                                <select name="category_id[]" class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" required>
-                                   <option value="" checked disabled>Select a Category</option>
-                                            <?php 
-                                            foreach($allCategories as $cat)
-                                            echo "<option value='".$cat['id']."'>".$cat['nom']."</option>"
-                                            ?>
-                                </select>
-                            </div>
-                        </div>`;
-
-                    carsContainer.insertAdjacentHTML('beforeend', newCarFields);
-                });
-
-                </script>
-
+               
 
    
 </body>

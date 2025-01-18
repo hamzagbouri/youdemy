@@ -29,6 +29,12 @@ class Etudiant extends User {
     public static function checkCourse($idEtd,$coursId)
     {
         $pdo = Database::getInstance()->getConnection();
+        $stmt = $pdo->prepare("SELECT Count(*) as totalCoursEtudiant FROM etudiant_cours where cours_id = :cours_id and etudiant_id = :etudiantId");
+        $stmt->bindParam(':etudiantId', $idEtd);
+        $stmt->bindParam(':cours_id', $coursId);
+        $stmt->execute();
+        $res =  $stmt->fetch(PDO::FETCH_ASSOC);
+        return $res['totalCoursEtudiant'];
 
     }
 
