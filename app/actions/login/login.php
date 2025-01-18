@@ -2,6 +2,7 @@
 require_once __DIR__.'/../../classes/enseignant.php';
 require_once __DIR__.'/../../classes/User.php';
 require_once __DIR__.'/../../classes/etudiant.php';
+require_once __DIR__.'/../../classes/admin.php';
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -17,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         
         $user = User::login($email, $password);
-       
+
         if($user === 403)
         {
             $_SESSION['message'] = "Invalid email or password ";
@@ -33,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else {
                 if($user->getRole() == 'enseignant')
                 {
-                    $res = Enseignant::isActive($user->getId());
+                    $res = $user->isActive();
                     
                     if($res == 1)
                     {
@@ -47,10 +48,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         header('Location: ../../../public/login.php');
                     } 
     
-                } else {
+                } else if($user->getRole() == 'etudiant'){
                     $_SESSION['message'] = "Welcome back ".$user->getNom();
                     $_SESSION['message_type'] = "success";
                     header('Location: ../../../public/index.php'); 
+                } else if($user->getRole() == 'admin'){
+                    $_SESSION['message'] = "Welcome back ".$user->getNom();
+                    $_SESSION['message_type'] = "success";
+                    header('Location: ../../../public/admin/index.php'); 
                 }
             }
              

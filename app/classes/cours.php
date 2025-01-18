@@ -76,6 +76,30 @@ abstract class Cours  {
             return $coursList;
         
    }
+   
+   public static function afficherTousAdmin(){
+  
+    $pdo = Database::getInstance()->getConnection();
+    $stmt = $pdo->query("SELECT * FROM CoursView ");
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $coursList = [];
+    foreach ($result as $row) {
+        if($row['contenu_type'] == 'video')
+        {
+            $cour = new coursVideo($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'] ,$row['video_url'],$row['enseignant_id'] ,$row['contenu_type'],$row['status']);
+            $cour->setFullName($row['fullName']);
+            $coursList[]=$cour;
+        } else 
+        {
+            $cour = new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'], $row['contenu'],$row['enseignant_id'] ,$row['contenu_type'],$row['status']);
+            $cour->setFullName($row['fullName']);
+            $coursList[]=$cour;
+        }
+    }
+    return $coursList;
+
+}
    public static function afficherParIdProf($idCours)
    {
       $idCourss = (int) $idCours;

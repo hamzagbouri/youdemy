@@ -18,14 +18,9 @@ class Enseignant extends User {
         $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
-    public static function isActive($id)
+    public  function isActive()
     {
-        $pdo = Database::getInstance()->getConnection();
-        $stmt = $pdo->prepare("SELECT active from user WHERE id = :id");
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-        $res = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $res['active'];
+        return $this->active;
     }
     public function getActive()
     {

@@ -1,11 +1,9 @@
 <?php
-require_once __DIR__ . '/User.php';
+require_once 'User.php';
+
 class Admin extends User {
-
-    public function __construct($nom, $email, $password) {
-        parent::__construct($nom, $email, $password, 'admin');
+    public function __construct($id, $fullName, $email, $password = null, $banned = 0) {
+        parent::__construct($id, $fullName, $email, $password, 'admin', $banned);
     }
-
 }
-
 ?>

@@ -44,7 +44,6 @@ class coursVideo extends Cours{
     }
 
     public function afficherCours() {
-        echo $this->video_url;
         echo "<div class='aspect-video bg-gray-900 relative'>
                 <video class='w-full h-full' controls>
                     <source src='./$this->video_url' type='video/mp4'>

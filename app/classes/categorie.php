@@ -61,10 +61,36 @@ class Categorie {
 
     public static function supprimer($id) {
         $pdo = Database::getInstance()->getConnection();
+    
+        
+        $checkStmt = $pdo->prepare("SELECT COUNT(*) FROM cours WHERE categorie_id = :id");
+        $checkStmt->bindParam(':id', $id);
+        $checkStmt->execute();
+        $count = $checkStmt->fetchColumn();
+    
+        if ($count > 0) {
+            
+            return [
+                'success' => false,
+                'message' => 'Cannot delete category because it is linked to existing courses.'
+            ];
+        }
+    
+       
         $stmt = $pdo->prepare("DELETE FROM Categorie WHERE id = :id");
         $stmt->bindParam(':id', $id);
-
-        return $stmt->execute();
+    
+        if ($stmt->execute()) {
+            return [
+                'success' => true,
+                'message' => 'Category deleted successfully.'
+            ];
+        } else {
+            return [
+                'success' => false,
+                'message' => 'Failed to delete category.'
+            ];
+        }
     }
 
     public function getId() {

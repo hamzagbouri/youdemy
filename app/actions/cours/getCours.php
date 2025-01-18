@@ -7,6 +7,10 @@ class getCours{
     {
         return Cours::afficherTous();
     }
+    static function getAllAdmin()
+    {
+        return Cours::afficherTousAdmin();
+    }
     static function getAllByTeacher()
     {   
         $id = trim(htmlspecialchars($_SESSION['logged_id']));

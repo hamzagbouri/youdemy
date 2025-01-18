@@ -68,7 +68,66 @@ class User {
     public function setBanned($banned) {
         $this->banned = $banned;
     }
-
+    public static function setBan($id, $ban)
+    {
+        $pdo = Database::getInstance()->getConnection();
+        $stmt = $pdo->prepare("UPDATE user SET banned = :ban WHERE id = :id");
+        $stmt->bindParam(':ban', $ban, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        echo "zdxd ".$ban." ".$id;
+        if ($stmt->execute()) {
+            return $stmt->execute(); 
+        } else {
+            return false; 
+        }
+    }
+    
+    public static function afficherTout()
+    {
+        $pdo = Database::getInstance()->getConnection();
+        $stmt = $pdo->prepare("SELECT * FROM user"); 
+        $stmt->execute();
+        $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $userList = [];
+    
+        foreach($res as $user) {
+            if($user['role'] == 'etudiant') {
+                
+                $userList[] = new Etudiant(
+                    $user['id'], 
+                    $user['fullName'], 
+                    $user['email'], 
+                    $user['password'], 
+                    $user['role'], 
+                    $user['banned']
+                );
+            } else if($user['role'] == 'enseignant') {
+            
+                $userList[] = new Enseignant(
+                    $user['id'], 
+                    $user['fullName'], 
+                    $user['email'], 
+                    $user['password'], 
+                    $user['role'], 
+                    $user['banned'],
+                    $user['active'] 
+                );
+            } else if($user['role'] == 'admin') {
+                
+                $userList[] = new Admin(
+                    $user['id'], 
+                    $user['fullName'], 
+                    $user['email'], 
+                    $user['password'], 
+                    $user['banned']
+                );
+            }
+        
+        }
+    
+        return $userList;
+    }
+    
     public static function login($email, $password) {
         $pdo = Database::getInstance()->getConnection();
         $stmt = $pdo->prepare("SELECT * FROM user WHERE email = :email");
@@ -83,6 +142,9 @@ class User {
                    
                 } elseif ($res['role'] == 'etudiant') {
                   $user = new Etudiant($res['id'], $res['fullName'], $res['email'], $res['password'], $res['role'],$res['banned']);
+                } else if ($res['role'] == 'admin')
+                {
+                    $user = new Admin($res['id'], $res['fullName'], $res['email'], $res['password'],$res['banned']);
                 }
                 $_SESSION['logged_id'] = $user->getId();
                 $_SESSION['role'] = $user->getRole();

@@ -52,3 +52,7 @@ CREATE VIEW CoursView AS
 SELECT c.*,u.fullName 
 FROM cours c
 JOIN user u ON c.enseignant_id = u.id;
+CREATE VIEW CoursViewAdmin AS
+SELECT c.*,u.fullName 
+FROM cours c
+JOIN user u ON c.enseignant_id = u.id;
