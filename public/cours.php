@@ -21,9 +21,14 @@ if(isset($_GET['page']))
     $start = ($page-1) *6;
     $cours = getCours::getCoursPagination($start);
 }
-if(isset($_POST['search']))
+if(isset($_GET['search']))
 {
+    $data = trim(htmlspecialchars($_GET['search']));
+    echo "a".$data;
     $cours = getCours::searchCours($data);
+    $totalCours = count($cours);
+    $totalPage = ceil($totalCours/6);
+   
 }
 
 
@@ -127,12 +132,16 @@ if(isset($_POST['search']))
             </h2>
             <div class="mb-10 flex justify-center">
             <div class="relative w-full max-w-lg">
-                <input 
+               <form action="" method="get">
+               <input 
+                    name="search" 
+                    onchange="this.form.submit()"
                     type="text" 
                     id="searchInput" 
                     placeholder="Search for a course..." 
                     class="w-full py-3 px-6 rounded-full border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 ease-in-out"
                 />
+               </form>
                 <div class="absolute right-4 top-3.5">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400 hover:text-blue-500 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M18 10a8 8 0 11-16 0 8 8 0 0116 0z" />
