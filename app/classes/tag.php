@@ -47,6 +47,19 @@ class Tag {
         }
         return $tags;
     }
+    public static function getAllForCours($idC) {
+        $pdo = Database::getInstance()->getConnection();
+        $stmt = $pdo->prepare("SELECT t.* FROM tag t inner join cours_tag ct on ct.tag_id = t.id where ct.cours_id = :id  ");
+        $stmt->bindParam(':id',$idC,PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $tags = [];
+        foreach ($result as $row) {
+            $tags[] = new Tag($row['id'], $row['titre']);
+        }
+        return $tags;
+    }
     public static function searchTag($search) {
         $pdo = Database::getInstance()->getConnection();
         $stmt = $pdo->prepare("SELECT * FROM Tag WHERE titre LIKE :query LIMIT 10");

@@ -75,8 +75,8 @@ function updateSelectedTags() {
 }
 
 courseTagsInput.addEventListener('input', function () {
-    const query = courseTagsInput.value;
-    if (query.length >= 2) {
+    const query = courseTagsInput.value.trim();
+    if (query.length >= 1) {
         fetchTags(query);
     } else {
         tagsList.classList.add('hidden');

@@ -1,5 +1,10 @@
 
 <?php 
+require_once __DIR__ . '../../../app/actions/cours/getCours.php';
+$totalCours = getCours::totalCoursAdmin();
+$totalCoursByCategory = getCours::totalCoursByCategory();
+$mostInscriptions = getCours::mostInscriptions();
+$topCoursesWithInstructor = getCours::topCoursesWithInstructor();
 session_start();
 if (isset($_SESSION['message'])) {
         
@@ -136,44 +141,90 @@ if (isset($_SESSION['message'])) {
             </nav>
         </header>
        
-        <section class="p-4 w-full flex flex-col gap-8">
-    <!-- Dashboard Heading -->
-    <div class="flex justify-between items-center">
-        <h2 class="text-2xl font-bold text-[#9c7e54]">Statistiques du Jour</h2>
-        <p class="text-gray-600">Bienvenue, Chef !</p>
+        <div class="p-6 bg-gray-50">
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Total Courses -->
+        <div class="transform hover:scale-105 transition-transform duration-300">
+            <div class="bg-white rounded-lg shadow-md p-6 animate-fade-in">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Total des cours</p>
+                        <p class="text-3xl font-bold text-gray-900"><?php echo $totalCours ?></p>
+                    </div>
+                    <div class="p-3 bg-blue-50 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Course Categories -->
+        <div class="transform hover:scale-105 transition-transform duration-300">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Catégories</p>
+                        <p class="text-3xl font-bold text-gray-900"><?php echo $totalCoursByCategory[0]['totalCategorie'] ?></p>
+                        <div class="mt-2 text-sm text-gray-500">
+                            <span class="font-medium text-green-600"><?php echo $totalCoursByCategory[0]['titre'] ?> (<?php echo $totalCoursByCategory[0]['totalCours'] ?>)</span>
+                            <?php for($i = 1; $i<count($totalCoursByCategory);$i++){ ?>
+                            <span class="block"><?php echo $totalCoursByCategory[$i]['titre'] ?> (<?php echo $totalCoursByCategory[$i]['totalCours'] ?>)</span>
+                            <?php }?>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-purple-50 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Most Popular Course -->
+        <div class="transform hover:scale-105 transition-transform duration-300">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Cours le plus populaire</p>
+                        <p class="text-xl font-bold text-gray-900"><?php echo $mostInscriptions['titre']?></p>
+                        <p class="text-sm text-gray-500"><?php echo $mostInscriptions['totalInscription']?> étudiants</p>
+                    </div>
+                    <div class="p-3 bg-yellow-50 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Teachers -->
+        <div class="transform hover:scale-105 transition-transform duration-300">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <p class="text-sm font-medium text-gray-600">Top 3 Enseignants</p>
+                    </div>
+                    <div class="space-y-2">
+                        <?php foreach($topCoursesWithInstructor as $top) {?>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Prof. <?php echo $top['fullName'] ?></span>
+                            <span class="text-sm text-green-600"><?php echo $top['totalInscriptions'] ?> Inscription</span>
+                        </div>
+                        <?php }?>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- Statistiques Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-        <div class="flex flex-col items-center p-4 bg-yellow-500 text-white rounded-lg shadow-md">
-            <h3 class="text-xl font-semibold">Demandes en Attente</h3>
-            <p class="text-3xl font-bold mt-2">00</p>
-        </div>
-
-  
-        <div class="flex flex-col items-center p-4 bg-green-500 text-white rounded-lg shadow-md">
-            <h3 class="text-xl font-semibold">Demandes Approuvées Aujourd'hui</h3>
-            <p class="text-3xl font-bold mt-2">00</p>
-        </div>
-
-    
-        <div class="flex flex-col items-center p-4 bg-blue-500 text-white rounded-lg shadow-md">
-            <h3 class="text-xl font-semibold">Demandes Approuvées pour Demain</h3>
-            <p class="text-3xl font-bold mt-2">00</p>
-        </div>
-
-      
-        <div class="flex flex-col items-center p-4 bg-[#9c7e54] text-white rounded-lg shadow-md">
-            <h3 class="text-xl font-semibold">Clients Inscrits</h3>
-            <p class="text-3xl font-bold mt-2">00</p>
-        </div>
-    </div>
-
-
-  
-</section>
-
+</div>
 
 
     </div>

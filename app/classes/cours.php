@@ -325,6 +325,84 @@ abstract class Cours  {
         
     }
 
+    public static function totalCoursAdmin()
+    {
+        try {
+            $pdo = Database::getInstance()->getConnection();
+
+            $stmt = $pdo->prepare("SELECT COUNT(*) as totalCours FROM cours");
+            $stmt->execute();
+            $res = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $res['totalCours'];
+        } catch (Exception $e) {
+            return 401; 
+        }
+    }
+
+    // 2. Total courses by category (limited to 3)
+    public static function totalCoursByCategory()
+    {
+        try {
+            $pdo = Database::getInstance()->getConnection();
+
+            $stmt = $pdo->prepare("SELECT count(c.id) as totalCours,ca.titre,(SELECT COUNT(*) FROM categorie) AS totalCategorie from cours c inner join categorie ca on c.categorie_id = ca.id GROUP BY c.categorie_id LIMIT 3;
+            ");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            return 401;
+        }
+    }
+
+   
+    public static function mostInscriptions()
+    {
+        try {
+            $pdo = Database::getInstance()->getConnection();
+
+            $stmt = $pdo->prepare("
+                SELECT COUNT(*) AS totalInscription, cours.titre 
+                FROM etudiant_cours e 
+                INNER JOIN cours ON cours.id = e.cours_id 
+                GROUP BY cours_id 
+                ORDER BY totalInscription DESC 
+                LIMIT 1
+            ");
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            return 401;
+        }
+    }
+
+    // 4. Top 3 courses with the most inscriptions along with the instructor
+    public static function topCoursesWithInstructor()
+    {
+        try {
+            $pdo = Database::getInstance()->getConnection();
+
+            $stmt = $pdo->prepare("SELECT u.fullName, COUNT(e.id) AS totalInscriptions FROM etudiant_cours e INNER JOIN cours c ON c.id = e.cours_id INNER JOIN user u ON c.enseignant_id = u.id GROUP BY c.enseignant_id ORDER BY totalInscriptions DESC LIMIT 3;
+
+            ");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            return 401;
+        }
+    }
+    public function attachTag($tagId) {
+        try {
+            $pdo = Database::getInstance()->getConnection();
+
+            $stmt = $pdo->prepare("INSERT INTO cours_tag (cours_id, tag_id) VALUES (?, ?)");
+           $res = $stmt->execute([$this->id, $tagId]);
+            return $res;
+        } catch (Exception $e) {
+            return 401 . $e->getMessage();
+        }
+    }
+    
+
     public function getId() {
         return $this->id;
     }

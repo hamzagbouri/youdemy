@@ -42,7 +42,22 @@ class getCours{
     {
         return Cours::afficherTousParEtudiant($idS);
     }
-   
+    static function totalCoursAdmin()
+    {
+        return Cours::totalCoursAdmin();
+    }
+    static function totalCoursByCategory()
+    {
+        return Cours::totalCoursByCategory();
+    }
+    static function mostInscriptions()
+    {
+        return Cours::mostInscriptions();
+    }
+    static function topCoursesWithInstructor()
+    {
+        return Cours::topCoursesWithInstructor();
+    }
 
   
 }

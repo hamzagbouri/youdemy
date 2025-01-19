@@ -1,0 +1,2 @@
+[2025-01-19 12:52:41] SQLSTATE[22007]: Invalid datetime format: 1366 Incorrect integer value: '/uploads/videos/How to upload file In PHP.mp4' for column `youdemy`.`cours`.`enseignant_id` at row 1
+[2025-01-19 12:52:42] SQLSTATE[22007]: Invalid datetime format: 1366 Incorrect integer value: '/uploads/videos/How to upload file In PHP.mp4' for column `youdemy`.`cours`.`enseignant_id` at row 1

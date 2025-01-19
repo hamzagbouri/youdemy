@@ -2,6 +2,7 @@
 require_once __DIR__ . '../../app/actions/cours/getCours.php';
 require_once __DIR__ . '../../app/actions/categorie/get.php';
 require_once __DIR__ . '../../app/actions/etudiant/coursEtudiant.php';
+require_once __DIR__ . '../../app/actions/tag/get.php';
 $cours = getCours::getCoursPagination(0);
 $categories = getCategory::getAllCategories();
 $totalCours = getCours::totalCours();
@@ -24,11 +25,9 @@ if(isset($_GET['page']))
 if(isset($_GET['search']))
 {
     $data = trim(htmlspecialchars($_GET['search']));
-    echo "a".$data;
     $cours = getCours::searchCours($data);
     $totalCours = count($cours);
     $totalPage = ceil($totalCours/6);
-   
 }
 
 
@@ -154,6 +153,7 @@ if(isset($_GET['search']))
                 
                     foreach($cours as $cou)
                     {
+                        $tags = getTag::getTagsForCours($cou->getId());
                        
                         if($cou instanceof coursVideo)
                         {
@@ -172,12 +172,11 @@ if(isset($_GET['search']))
                                 </div> 
                                 <div class="p-8"> 
                                     <div class="flex items-center gap-2 mb-4"> 
+                                        <?php foreach($tags as $tag) {?>
                                         <span class="text-sm font-medium px-3 py-1 rounded-full bg-blue-100 text-blue-600"> 
-                                            Programming 
+                                           <?php echo $tag->getTitre(); ?>
                                         </span> 
-                                        <span class="text-sm font-medium px-3 py-1 rounded-full bg-purple-100 text-purple-600"> 
-                                            4 Hours 
-                                        </span> 
+                                      <?php }?>
                                     </div> 
                                     <h3 class="text-2xl font-bold mb-3 text-gray-800"> 
                                         <?php echo $cou->getTitre() ?> 
@@ -227,12 +226,12 @@ if(isset($_GET['search']))
                     </div>
                     <div class="p-8">
                         <div class="flex items-center gap-2 mb-4">
-                            <span class="text-sm font-medium px-3 py-1 rounded-full bg-emerald-100 text-emerald-600">
-                                Mathematics
-                            </span>
-                            <span class="text-sm font-medium px-3 py-1 rounded-full bg-teal-100 text-teal-600">
-                                12 Lessons
-                            </span>
+                        
+                            <?php foreach($tags as $tag) {?>
+                                <span class="text-sm font-medium px-3 py-1 rounded-full bg-emerald-100 text-emerald-600">
+                                <?php echo $tag->getTitre(); ?>
+                                        </span> 
+                                      <?php }?>
                         </div>
                         <h3 class="text-2xl font-bold mb-3 text-gray-800">
                             <?php echo $cou->getTitre() ?>

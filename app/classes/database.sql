@@ -56,3 +56,14 @@ CREATE VIEW CoursViewAdmin AS
 SELECT c.*,u.fullName 
 FROM cours c
 JOIN user u ON c.enseignant_id = u.id;
+------
+
+select count(*) as totalCours from cours;
+select count(c.id) as totalCours,ca.titre,(SELECT COUNT(*) FROM categorie) AS totalCategorie from cours c inner join categorie ca on c.categorie_id = ca.id GROUP BY c.categorie_id LIMIT 3;
+select count(*) as totalInscription,  cours.titre from etudiant_cours e inner join cours on cours.id = e.cours_id
+group by cours_id ORDER by totalInscription desc limit 1;
+select count(*) as totalInscription,  cours.titre, u.fullName from etudiant_cours e inner join cours on cours.id = e.cours_id inner join user u on cours.enseignant_id = u.id
+group by cours_id ORDER by totalInscription desc limit 3;
+
+
+

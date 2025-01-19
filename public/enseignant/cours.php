@@ -1,4 +1,5 @@
 <?php?><?php
+session_start();
 require_once dirname(__DIR__, 3) . '/Youdemy/app/actions/categorie/get.php';
 require_once dirname(__DIR__, 3) . '/Youdemy/app/actions/cours/getCours.php';
 if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'enseignant')
@@ -292,7 +293,7 @@ function editCourse(courseId) {
                         placeholder="Type and press Enter to add tags">
                     <div id="tagsList" class="hidden bg-white border mt-1 rounded-md shadow-md overflow-y-auto max-h-32 w-full"></div>
                     <div id="selectedTags" class="mt-2 flex flex-wrap gap-2"></div>
-                    <!-- <input type="hidden" name="tags[]" id="tags"> -->
+                    <input type="hidden" name="[]" id="tags">
                 </div>
                 <div>
                     <label for="courseCategorie" class="block text-sm font-medium text-gray-700">Categorie</label>
