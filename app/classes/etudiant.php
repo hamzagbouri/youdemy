@@ -37,6 +37,20 @@ class Etudiant extends User {
         return $res['totalCoursEtudiant'];
 
     }
+    public static function getEtudiantsByCours($coursId)
+{
+    try {
+        $pdo = Database::getInstance()->getConnection();
+        
+        $stmt = $pdo->prepare("SELECT e.id, e.fullName, e.email,ec.date_inscription FROM etudiant_cours ec INNER JOIN user e ON ec.etudiant_id = e.id WHERE ec.cours_id = :coursId; ");
+        $stmt->bindParam(':coursId', $coursId, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        return ['error' => true, 'message' => $e->getMessage()];
+    }
+}
 
 }
 

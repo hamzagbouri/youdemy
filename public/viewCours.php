@@ -1,7 +1,8 @@
 <?php?><?php
-session_start();
+
 require_once __DIR__. '/../app/actions/categorie/get.php';
 require_once __DIR__ . '/../app/actions/cours/getCours.php';
+require_once __DIR__ . '/../app/actions/etudiant/coursEtudiant.php';
 if(!isset($_SESSION['logged_id']) || !isset($_GET['coursId']))
 {
         header('Location: index.php');
@@ -14,6 +15,7 @@ $idCours = trim(htmlspecialchars($_GET['coursId']));
 $id = $_SESSION['logged_id'];
 $categories = getCategory::getAllCategories();
 $cours = getCours::getById($idCours);
+$allEtudiants = coursEtudiant::getEtudiantsByCours($cours->getId());
 
 if($_SESSION['role'] == 'enseignant')
 {
@@ -206,6 +208,40 @@ if($_SESSION['role'] == 'enseignant')
         </div>
     </div>
 </section>
+<?php if($mine) {?>
+    <div class="p-8 border-t">
+    <h2 class="text-2xl font-bold mb-6">Enrolled Students</h2>
+    
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <!-- Table Header -->
+        <div class="grid grid-cols-3 gap-4 p-4 bg-gray-50 border-b text-sm font-medium text-gray-600">
+            <div>Student Name</div>
+            <div>Email</div>
+            <div>Inscription Date</div>
+        </div>
+        
+        <!-- Table Body -->
+        <div class="divide-y">
+            <?php foreach($allEtudiants as $etudiant): ?>
+            <div class="grid grid-cols-3 gap-4 p-4 items-center hover:bg-gray-50 transition-colors">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                        <span class="text-blue-600 font-medium">
+                            <?php echo substr($etudiant['fullName'], 0, 1); ?>
+                        </span>
+                    </div>
+                    <span class="font-medium text-gray-800"><?php echo $etudiant['fullName']; ?></span>
+                </div>
+                <div class="text-gray-600"><?php echo $etudiant['email']; ?></div>
+                <div class="text-gray-600">
+                    <?php echo date('d M Y', strtotime($etudiant['date_inscription'])); ?>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+<?php } ?>
 <script >
 function confirmDelete(courseId) {
     Swal.fire({

@@ -11,5 +11,9 @@ class CoursEtudiant {
         $count = Etudiant::checkCourse($idEtd,$idC);
         return $count;
     }
+    static function getEtudiantsByCours($idC)
+    {
+        return Etudiant::getEtudiantsByCours($idC);
+    }
 }
 ?>
