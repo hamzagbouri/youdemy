@@ -3,16 +3,15 @@ require_once __DIR__ . '/../../classes/tag.php';
 session_start();
 if($_SERVER['REQUEST_METHOD'] == "POST"){
     if(isset($_POST['submit']) ){
-        $nom = trim(htmlspecialchars($_POST['nom-category']));
-        $tag = new Tag(null,$nom);
-        $res = $tag->add();
-        if($res == 202)
+        $tags = ($_POST['tags']);
+        foreach($tags as $tag)
         {
-            
+            echo $tag;
+            $newtag = new Tag(null,$tag);
+            $res = $newtag->add();
         }
-        else {
-            echo "couldn't add tag";
-        }
+        
+    
 
     } else if (isset($_POST['edit']))
     {

@@ -213,48 +213,53 @@ if (isset($_SESSION['message'])) {
     <?php endforeach; ?>
 </div>
 <div
-        id="categoryModal"
-        class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
-        <div class="bg-white rounded-lg w-96 p-6">
-          <h2 class="text-2xl font-semibold mb-4">Add New Tag</h2>
-          <form
-            id="categoryForm"
-            method="POST"
-            action="../../app/actions/tag/add.php"
-          >
-            <label
-              for="categoryName"
-              class="block text-sm font-medium text-gray-700"
-              >Tag Name</label
-            >
-            <input
-              type="text"
-              id="categoryName"
-              name="nom-category"
-              class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
-              placeholder="Enter tag name"
-              required
-            />
-            <div class="mt-6 flex justify-end gap-4">
-              <button
-                type="button"
-                id="closeModal"
-                class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                name="submit"
-                class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark"
-              >
-                Add Tag
-              </button>
-            </div>
-          </form>
-        </div>
+  id="categoryModal"
+  class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+  <div class="bg-white rounded-lg w-96 p-6">
+    <h2 class="text-2xl font-semibold mb-4">Add New Tags</h2>
+    <form
+      id="categoryForm"
+      method="POST"
+      action="../../app/actions/tag/add.php">
+      <div id="tagsContainer">
+        <label
+          for="categoryName"
+          class="block text-sm font-medium text-gray-700"
+          >Tag Name</label
+        >
+        <input
+          type="text"
+          id="categoryName"
+          name="tags[]"
+          class="w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          placeholder="Enter tag name"
+          required
+        />
       </div>
-    </div>
+      <button
+        type="button"
+        id="addTagField"
+        class="mt-3 text-blue-500 hover:underline">
+        + Add another tag
+      </button>
+      <div class="mt-6 flex justify-end gap-4">
+        <button
+          type="button"
+          id="closeModal"
+          class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">
+          Cancel
+        </button>
+        <button
+          type="submit"
+          name="submit"
+          class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark">
+          Add Tags
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
     <div
         id="categoryModal-edit"
         class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
@@ -305,19 +310,18 @@ if (isset($_SESSION['message'])) {
       </div>
 
 <script>
-function editTag(id) {
-    // Add your edit logic here
-    console.log('Editing tag:', id);
-}
+  document.getElementById("addTagField").addEventListener("click", function () {
+  const tagsContainer = document.getElementById("tagsContainer");
+  const newInput = document.createElement("input");
+  newInput.type = "text";
+  newInput.name = "tags[]";
+  newInput.placeholder = "Enter another tag name";
+  newInput.className =
+    "w-full p-3 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary";
+  tagsContainer.appendChild(newInput);
+});
 
-function deleteTag(id) {
-    if (confirm('Are you sure you want to delete this tag?')) {
-        // Add your delete logic here
-        console.log('Deleting tag:', id);
-        // You might want to make an AJAX call to your PHP backend
-        // window.location.href = `delete_tag.php?id=${id}`;
-    }
-}
+
 </script>
 <script>
       const modalEdit = document.getElementById("categoryModal-edit");
