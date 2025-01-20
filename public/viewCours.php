@@ -536,7 +536,7 @@ document.getElementById('editCourseForm').addEventListener('submit', function (e
     })
     .then(data => {
         console.log(data); 
-         window.location.href ='cours.php'
+         window.location.href =`viewCours.php?coursId=${data['coursId']}`
    
     })
     .catch(error => {

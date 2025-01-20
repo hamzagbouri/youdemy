@@ -30,15 +30,16 @@ class coursVideo extends Cours{
     }
     
     public function mettreAJour() {
-        $sql = "UPDATE cours SET titre = :titre, description = :description, categorie_id = :categorie_id, 
-                enseignant_id = :enseignant_id, video_url = :video_url WHERE id = :id";
-        $stmt = self::$pdo->prepare($sql);
-        $stmt->execute([
+        $sql = "UPDATE cours SET titre = :titre, description = :description, image_path= :image_path, categorie_id = :categorie_id, 
+                video_url = :video_url WHERE id = :id";
+             $pdo = Database::getInstance()->getConnection();
+        $stmt = $pdo->prepare($sql);
+       return $stmt->execute([
             'titre' => $this->titre,
             'description' => $this->description,
-            'categorie_id' => $this->categorie_id,
-            'enseignant_id' => $this->enseignant_id,
+            'categorie_id' => $this->id_categorie,
             'video_url' => $this->video_url,
+            'image_path' => $this->image_path,
             'id' => $this->id
         ]);
     }

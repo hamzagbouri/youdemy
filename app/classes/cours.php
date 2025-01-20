@@ -282,6 +282,22 @@ abstract class Cours  {
             return "Error Deleting Course: " . $e->getMessage();
         }
     }
+    public static function supprimerCours($id) {
+        try {
+            $db = Database::getInstance()->getConnection();
+            $stmt = $db->prepare("DELETE from  Cours  WHERE id = :id");
+
+            $stmt->bindParam(':id', $id);
+            $res = $stmt->execute();
+            if ($res) {
+                return 202;
+            } else {
+                return false;
+            }
+        } catch (Exception $e) {
+            return "Error Deleting Course: " . $e->getMessage();
+        }
+    }
 
     public function addEtudiant($etudiant_id) {
         $pdo = Database::getInstance()->getConnection();

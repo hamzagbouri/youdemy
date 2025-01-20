@@ -1,3 +1,53 @@
 [2025-01-19 12:52:41] SQLSTATE[22007]: Invalid datetime format: 1366 Incorrect integer value: '/uploads/videos/How to upload file In PHP.mp4' for column `youdemy`.`cours`.`enseignant_id` at row 1
 [2025-01-19 12:52:42] SQLSTATE[22007]: Invalid datetime format: 1366 Incorrect integer value: '/uploads/videos/How to upload file In PHP.mp4' for column `youdemy`.`cours`.`enseignant_id` at row 1
 [2025-01-20 10:10:41] Course with ID 0 not found.
+[2025-01-20 10:29:30] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id_categorie' in 'field list'
+[2025-01-20 10:29:30] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id_categorie' in 'field list'
+[2025-01-20 10:30:00] SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id_categorie' in 'field list'
+[2025-01-20 10:34:49] Failed to update the course.
+[2025-01-20 10:35:04] Failed to update the course.
+[2025-01-20 10:36:42] Failed to update the course.
+[2025-01-20 10:36:43] Failed to update the course.
+[2025-01-20 10:37:50] Failed to update the course.
+[2025-01-20 10:37:51] Failed to update the course.
+[2025-01-20 10:39:47] Failed to update the course.
+[2025-01-20 10:39:48] Failed to update the course.
+[2025-01-20 10:39:48] Failed to update the course.
+[2025-01-20 10:39:48] Failed to update the course.
+[2025-01-20 10:39:49] Failed to update the course.
+[2025-01-20 10:39:49] Failed to update the course.
+[2025-01-20 10:39:49] Failed to update the course.
+[2025-01-20 10:39:49] Failed to update the course.
+[2025-01-20 10:39:50] Failed to update the course.
+[2025-01-20 10:40:08] Failed to update the course.
+[2025-01-20 10:40:08] Failed to update the course.
+[2025-01-20 10:40:09] Failed to update the course.
+[2025-01-20 10:40:32] Failed to update the course.
+[2025-01-20 10:40:34] Failed to update the course.
+[2025-01-20 10:40:35] Failed to update the course.
+[2025-01-20 10:42:15] Failed to update the course.
+[2025-01-20 10:42:16] Failed to update the course.
+[2025-01-20 10:42:16] Failed to update the course.
+[2025-01-20 10:42:16] Failed to update the course.
+[2025-01-20 10:42:16] Failed to update the course.
+[2025-01-20 10:42:17] Failed to update the course.
+[2025-01-20 10:42:17] Failed to update the course.
+[2025-01-20 10:42:17] Failed to update the course.
+[2025-01-20 10:42:18] Failed to update the course.
+[2025-01-20 10:42:19] Failed to update the course.
+[2025-01-20 10:42:19] Failed to update the course.
+[2025-01-20 10:42:19] Failed to update the course.
+[2025-01-20 10:42:19] Failed to update the course.
+[2025-01-20 10:42:20] Failed to update the course.
+[2025-01-20 10:42:29] Failed to update the course.
+[2025-01-20 10:43:08] Failed to update the course.
+[2025-01-20 10:43:08] Failed to update the course.
+[2025-01-20 10:43:09] Failed to update the course.
+[2025-01-20 10:43:09] Failed to update the course.
+[2025-01-20 10:43:09] Failed to update the course.
+[2025-01-20 10:43:10] Failed to update the course.
+[2025-01-20 10:43:10] Failed to update the course.
+[2025-01-20 10:43:10] Failed to update the course.
+[2025-01-20 10:43:10] Failed to update the course.
+[2025-01-20 10:43:10] Failed to update the course.
+[2025-01-20 10:43:10] Failed to update the course.

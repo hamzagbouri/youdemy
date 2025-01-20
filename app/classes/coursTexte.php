@@ -32,17 +32,22 @@ class coursTexte extends Cours{
     }
     
     public function mettreAJour() {
-        $sql = "UPDATE cours SET titre = :titre, description = :description, categorie_id = :categorie_id, 
-                enseignant_id = :enseignant_id, contenu = :contenu WHERE id = :id";
-        $stmt = self::$pdo->prepare($sql);
-        $stmt->execute([
-            'titre' => $this->titre,
-            'description' => $this->description,
-            'categorie_id' => $this->categorie_id,
-            'enseignant_id' => $this->enseignant_id,
-            'contenu' => $this->contenue,
-            'id' => $this->id
-        ]);
+        try {
+            $pdo = Database::getInstance()->getConnection();
+            $sql = "UPDATE cours SET titre = :titre, description = :description, categorie_id = :categorie_id, contenu = :contenu WHERE id = :id";
+            $stmt = $pdo->prepare($sql);
+            return  $stmt->execute([
+                'titre' => $this->titre,
+                'description' => $this->description,
+                'categorie_id' => $this->id_categorie,
+                'contenu' => $this->contenue,
+                'id' => $this->id,
+            ]);
+           
+        } catch (PDOException $e) {
+            return "Error: " . $e->getMessage();
+        }
+
     }
     public function afficherCours() {
         echo "<div class='py-6 px-12'>
