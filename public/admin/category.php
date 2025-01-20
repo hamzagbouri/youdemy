@@ -2,6 +2,11 @@
 require_once '../../app/actions/categorie/get.php';
 session_start();
 $allCategories = getCategory::getAllCategories();
+if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'admin')
+{
+        header('Location: ../index.php');
+    
+}
 if (isset($_SESSION['message'])) {
         
     $message = $_SESSION['message'];

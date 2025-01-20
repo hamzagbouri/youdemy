@@ -2,6 +2,11 @@
 require_once '../../app/actions/tag/get.php';
 session_start();
 $allTags = getTag::getAllTags();
+if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'enseignant')
+{
+        header('Location: ../index.php');
+    
+}
 if (isset($_SESSION['message'])) {
         
     $message = $_SESSION['message'];

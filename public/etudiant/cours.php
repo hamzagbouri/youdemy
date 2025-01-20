@@ -134,11 +134,7 @@ $allCours = getCours::getAllByStudent($idStudent);
 
     <section>
     <div class="py-10 md:px-12 px-6">
-        <button 
-            class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition"
-            onclick="toggleModal(true)">
-            Add Course
-        </button>
+
 
         <!-- Existing Course Card -->
         <div class="overflow-x-auto bg-white rounded-lg shadow">

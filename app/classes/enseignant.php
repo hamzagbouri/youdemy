@@ -4,7 +4,7 @@ require_once 'traitSignup.php';
 class Enseignant extends User {
     use traitSignup; 
 
-    protected $active;
+    private $active;
 
     public function __construct($id=null, $nom, $email, $password, $role,$banned = 0, $active = 0) {
         parent::__construct($id,$nom, $email, $password, $role,$banned);

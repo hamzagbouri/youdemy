@@ -6,6 +6,11 @@ $totalCoursByCategory = getCours::totalCoursByCategory();
 $mostInscriptions = getCours::mostInscriptions();
 $topCoursesWithInstructor = getCours::topCoursesWithInstructor();
 session_start();
+if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'enseignant')
+{
+        header('Location: ../index.php');
+    
+}
 if (isset($_SESSION['message'])) {
         
     $message = $_SESSION['message'];

@@ -51,3 +51,4 @@
 [2025-01-20 10:43:10] Failed to update the course.
 [2025-01-20 10:43:10] Failed to update the course.
 [2025-01-20 10:43:10] Failed to update the course.
+[2025-01-20 12:35:55] SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'contenu' at row 1

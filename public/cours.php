@@ -195,9 +195,15 @@ if(isset($_GET['search']))
                                     
                                     <!-- Actions Container -->
                                     <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                                        <a href="viewCours.php?coursId=<?php echo $cou->getId();?>" class="text-blue-500 hover:text-blue-700 font-medium"> 
-                                            View Course → 
-                                        </a>
+                                    <?php if (isset($_SESSION['logged_id'])): ?>
+                                            <a href="viewCours.php?coursId=<?php echo $cou->getId(); ?>" class="text-blue-500 hover:text-blue-700 font-medium">
+                                                View Course →
+                                            </a>
+                                        <?php else: ?>
+                                            <a  href="login.php" class="text-gray-500 font-medium">
+                                                Login to view course
+                                            </a>
+                                        <?php endif; ?>
                                         
                                         <?php if(isset($isEtudiant) && $isEtudiant && (coursEtudiant::checkInscription($cou->getId(),$idLog) == 0 )): ?>
                                         <button 
@@ -248,9 +254,15 @@ if(isset($_GET['search']))
                             </div>
                         </div>
                         <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                                        <a href="viewCours.php?coursId=<?php echo $cou->getId();?>" class="text-blue-500 hover:text-blue-700 font-medium"> 
-                                            View Course → 
-                                        </a>
+                        <?php if (isset($_SESSION['logged_id'])): ?>
+                                            <a href="viewCours.php?coursId=<?php echo $cou->getId(); ?>" class="text-blue-500 hover:text-blue-700 font-medium">
+                                                View Course →
+                                            </a>
+                                        <?php else: ?>
+                                            <a  href="login.php" class="text-gray-500 font-medium">
+                                                Login to view course
+                                            </a>
+                                        <?php endif; ?>
                                         
                                         <?php if(isset($isEtudiant) && $isEtudiant && (coursEtudiant::checkInscription($cou->getId(),$idLog) == 0 )): ?>
                                             <button 

@@ -174,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
        
             if ($type === 'texte') {
-                $contenue = $_POST['content'] ?? null;
+                $contenue = trim($_POST['content']) ?? null;
                 $cours->setContenue($contenue);
             } elseif ($type === 'video') {
                 if (isset($_FILES['video']) && $_FILES['video']['error'] === UPLOAD_ERR_OK) {

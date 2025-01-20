@@ -85,7 +85,7 @@ $totalCours = getEnseignant::totalCours($idE);
           </div>
           <span class="text-sm text-gray-500">Total Étudiants</span>
         </div>
-        <h3 class="text-3xl font-bold text-gray-800"><?php echo $totalInscription['totalInscriptions'] ?></h3>
+        <h3 class="text-3xl font-bold text-gray-800"><?php echo $totalInscription['totalInscriptions'] ?? 0?></h3>
         <p class="text-green-500 text-sm mt-2 flex items-center">
           <i class="ri-arrow-up-line mr-1"></i>
           +12.5% ce mois
@@ -100,7 +100,7 @@ $totalCours = getEnseignant::totalCours($idE);
           </div>
           <span class="text-sm text-gray-500">Total Cours</span>
         </div>
-        <h3 class="text-3xl font-bold text-gray-800"><?php echo $totalCours['totalCours'] ?></h3>
+        <h3 class="text-3xl font-bold text-gray-800"><?php echo $totalCours['totalCours'] ?? 0?></h3>
         <p class="text-green-500 text-sm mt-2 flex items-center">
           <i class="ri-arrow-up-line mr-1"></i>
           +5.3% ce mois

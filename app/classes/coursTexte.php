@@ -33,16 +33,18 @@ class coursTexte extends Cours{
     
     public function mettreAJour() {
         try {
+           
             $pdo = Database::getInstance()->getConnection();
             $sql = "UPDATE cours SET titre = :titre, description = :description, categorie_id = :categorie_id, contenu = :contenu WHERE id = :id";
             $stmt = $pdo->prepare($sql);
-            return  $stmt->execute([
+            $res =  $stmt->execute([
                 'titre' => $this->titre,
                 'description' => $this->description,
                 'categorie_id' => $this->id_categorie,
                 'contenu' => $this->contenue,
                 'id' => $this->id,
             ]);
+            return $res;
            
         } catch (PDOException $e) {
             return "Error: " . $e->getMessage();
@@ -61,7 +63,7 @@ class coursTexte extends Cours{
     }
     
     public function setContenue($contenue) {
-        return $this->contenue;
+         $this->contenue =$contenue ;
     }
 }
 ?>
