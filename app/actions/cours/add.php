@@ -6,8 +6,8 @@ require_once __DIR__ . '/../../classes/tag.php';
 session_start();
 
 // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//             $input = file_get_contents('php://input');
-//         $data = json_decode($input, true);
+        //     $input = file_get_contents('php://input');
+        // $data = json_decode($input, true);
 //     $titre = $data['title'] ;
 //     $description = $data['description'] ;
 //     $id_categorie = $data['id_categorie'] ;

@@ -66,4 +66,9 @@ select count(*) as totalInscription,  cours.titre, u.fullName from etudiant_cour
 group by cours_id ORDER by totalInscription desc limit 3;
 
 
+--------Teacher
 
+SELECT u.fullName, COUNT(e.id) AS totalInscriptions FROM etudiant_cours e INNER JOIN cours c ON c.id = e.cours_id INNER JOIN user u ON c.enseignant_id = u.id where enseignant_id=9 GROUP BY c.enseignant_id ORDER BY totalInscriptions DESC;
+
+
+SELECT count(*) from cours where enseignant_id = 9 group by enseignant_id;

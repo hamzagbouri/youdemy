@@ -19,7 +19,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
         }else {
             $ban = 0;
         }
-       $res = User::setBan($id,$ban);
+       $res = Admin::setBan($id,$ban);
        var_dump($res);
     } else if(isset($_POST['active']))
     {

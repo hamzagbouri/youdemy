@@ -1,7 +1,8 @@
 <?php?><?php
-session_start();
+
 require_once dirname(__DIR__, 3) . '/Youdemy/app/actions/categorie/get.php';
 require_once dirname(__DIR__, 3) . '/Youdemy/app/actions/cours/getCours.php';
+require_once dirname(__DIR__, 3) . '/Youdemy/app/actions/enseignant/get.php';
 if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'enseignant')
 {
         header('Location: ../index.php');
@@ -10,6 +11,8 @@ if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'enseignant')
 $idE = $_SESSION['logged_id'];
 $categories = getCategory::getAllCategories();
 $cours = getCours::getAllByTeacher($idE);
+$totalInscription = getEnseignant::totalInscription($idE);
+$totalCours = getEnseignant::totalCours($idE);
 
 
 
@@ -82,7 +85,7 @@ $cours = getCours::getAllByTeacher($idE);
           </div>
           <span class="text-sm text-gray-500">Total Étudiants</span>
         </div>
-        <h3 class="text-3xl font-bold text-gray-800">2,845</h3>
+        <h3 class="text-3xl font-bold text-gray-800"><?php echo $totalInscription['totalInscriptions'] ?></h3>
         <p class="text-green-500 text-sm mt-2 flex items-center">
           <i class="ri-arrow-up-line mr-1"></i>
           +12.5% ce mois
@@ -97,7 +100,7 @@ $cours = getCours::getAllByTeacher($idE);
           </div>
           <span class="text-sm text-gray-500">Total Cours</span>
         </div>
-        <h3 class="text-3xl font-bold text-gray-800">156</h3>
+        <h3 class="text-3xl font-bold text-gray-800"><?php echo $totalCours['totalCours'] ?></h3>
         <p class="text-green-500 text-sm mt-2 flex items-center">
           <i class="ri-arrow-up-line mr-1"></i>
           +5.3% ce mois
@@ -355,6 +358,8 @@ function editCourse(courseId) {
         </div>
     </div>
 </section>
+
+
 
 <script src = "cours.js">
 

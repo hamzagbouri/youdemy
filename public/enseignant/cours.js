@@ -115,5 +115,7 @@ document.getElementById('addCourseForm').addEventListener('submit', function (e)
     });
     
 });
+// Open the modal and populate course data
+
 
 

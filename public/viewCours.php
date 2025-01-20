@@ -3,6 +3,7 @@
 require_once __DIR__. '/../app/actions/categorie/get.php';
 require_once __DIR__ . '/../app/actions/cours/getCours.php';
 require_once __DIR__ . '/../app/actions/etudiant/coursEtudiant.php';
+require_once __DIR__ . '../../app/actions/tag/get.php';
 if(!isset($_SESSION['logged_id']) || !isset($_GET['coursId']))
 {
         header('Location: index.php');
@@ -15,12 +16,12 @@ $idCours = trim(htmlspecialchars($_GET['coursId']));
 $id = $_SESSION['logged_id'];
 $categories = getCategory::getAllCategories();
 $cours = getCours::getById($idCours);
-$allEtudiants = coursEtudiant::getEtudiantsByCours($cours->getId());
 
 if($_SESSION['role'] == 'enseignant')
 {
    
     $cours = getCours::getByIdProf($idCours);
+    $allEtudiants = coursEtudiant::getEtudiantsByCours($cours->getId());
     if($cours->getEnseignantId() == $id)
     {
         $mine = true;
@@ -95,12 +96,16 @@ if($_SESSION['role'] == 'enseignant')
             <div class="bg-white rounded-xl shadow-lg mb-8">
                 <div class="p-8">
                     <div class="flex gap-3 mb-4">
-                        <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">
-                            Programming
+                        <?php $tags = getTag::getTagsForCours($cours->getId());
+                        foreach($tags as $tag)
+                        {
+                            ?>
+                            <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">
+                            <?php echo $tag->getTitre() ?>
                         </span>
-                        <span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-sm font-medium">
-                            Video Course
-                        </span>
+                            <?php
+                        }
+                        ?>
                     </div>
                     <?php if($mine): ?>
                     <div class="flex gap-2">
@@ -242,7 +247,263 @@ if($_SESSION['role'] == 'enseignant')
     </div>
 </div>
 <?php } ?>
+<div id="editCourseModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg shadow-lg w-[80%] p-6 overflow-y-auto h-[80%]">
+        <h2 class="text-lg font-semibold text-gray-800">Edit Course</h2>
+        <form id="editCourseForm" class="mt-4 space-y-4" enctype="multipart/form-data">
+            <input type="hidden" id="courseId" name="courseId">
+
+            <div>
+                <label for="editCourseTitle" class="block text-sm font-medium text-gray-700">Title</label>
+                <input 
+                    type="text" 
+                    id="editCourseTitle" 
+                    name="title" 
+                    class="block w-full px-3 py-2 mt-1 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+
+            <div>
+                <label for="editCourseDescription" class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea 
+                    id="editCourseDescription" 
+                    name="description" 
+                    class="block w-full mt-1 border px-3 py-2 h-32 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </textarea>
+            </div>
+
+            <div>
+                <label for="editCourseImage" class="block text-sm font-medium text-gray-700">Image</label>
+                <input 
+                    type="file" 
+                    id="editCourseImage" 
+                    name="image" 
+                    accept="image/*"
+                    class="block w-full mt-1 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+
+            <div>
+                <label for="editCourseTags" class="block text-sm font-medium text-gray-700">Tags</label>
+                <input 
+                    type="text" 
+                    id="editCourseTags" 
+                    name="tags" 
+                    class="block w-full px-3 py-2 mt-1 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
+                    placeholder="Type and press Enter to add tags">
+                <div id="editTagsList" class="hidden bg-white border mt-1 rounded-md shadow-md overflow-y-auto max-h-32 w-full"></div>
+                <div id="editSelectedTags" class="mt-2 flex flex-wrap gap-2"></div>
+                <input type="hidden" name="[]" id="editTags">
+            </div>
+
+            <div>
+                <label for="editCourseCategorie" class="block text-sm font-medium text-gray-700">Category</label>
+                <select 
+                    id="editCourseCategorie" 
+                    name="categorie" 
+                    class="block px-3 py-2 w-full mt-1 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <?php
+                        foreach($categories as $categorie)
+                        {
+                            echo "<option value ='".$categorie->getId()."'>".$categorie->getTitre()."</option>";
+                        }
+                    ?>
+                </select>
+            </div>
+
+            <div>
+                <label for="editCourseType" class="block text-sm font-medium text-gray-700">Type</label>
+                <select 
+                    id="editCourseType" 
+                    name="type" 
+                    class="block px-3 py-2 w-full mt-1 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    onchange="toggleContentField()">
+                    <option value="texte">Text</option>
+                    <option value="video">Video</option>
+                </select>
+            </div>
+
+            <div id="editTextContentField" class="hidden">
+                <label for="editCourseText" class="block text-sm font-medium text-gray-700">Text Content</label>
+                <textarea 
+                    id="editCourseText" 
+                    name="content" 
+                    class="block w-full mt-1 border px-3 py-2 h-32 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                </textarea>
+            </div>
+
+            <div id="editVideoContentField" class="hidden">
+                <label for="editCourseVideo" class="block text-sm font-medium text-gray-700">Video File</label>
+                <input 
+                    type="file" 
+                    id="editCourseVideo" 
+                    name="video" 
+                    accept="video/*"
+                    class="block w-full mt-1 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+
+            <div class="flex justify-end space-x-4">
+                <button 
+                    type="button" 
+                    class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow-md hover:bg-gray-400 transition"
+                    onclick="toggleModal(false)">
+                    Cancel
+                </button>
+                <button 
+                    id="updateCourse"
+                    type="submit" 
+                    class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 <script >
+// Function to edit course details
+// Function to edit course details
+const courseTagsInput = document.getElementById('editCourseTags');
+const tagsList = document.getElementById('editTagsList');
+const selectedTagsContainer = document.getElementById('editSelectedTags');
+let selectedTags = [];
+function editCourse(courseId) {
+    fetch(`../app/actions/cours/getJson.php?coursId=${courseId}`)
+        .then(response => response.json())
+        .then(course => {
+            console.log(course);
+            document.getElementById('courseId').value = courseId;
+            document.getElementById('editCourseTitle').value = course.titre;
+            document.getElementById('editCourseDescription').value = course.description;
+            document.getElementById('editCourseCategorie').value = course.categorie_id;
+            document.getElementById('editCourseType').value = course.contenu_type;
+
+            // Toggle content fields based on type
+            toggleContentField(course.contenu_type);
+
+            if (course.contenu_type === 'texte') {
+                console.log("conn",course.contenu)
+                document.getElementById('editCourseText').value = course.contenu;
+            }
+
+            toggleModal(true);
+        })
+        .catch(err => console.error('Error fetching course details:', err));
+
+    fetch(`../app/actions/tag/getAllJson.php?coursId=${courseId}`)
+        .then(response => response.json())
+        .then(tags => {
+            selectedTags = tags;
+            updateSelectedTags(tags);
+        })
+        .catch(err => console.error('Error fetching course tags:', err));
+}
+
+// Fetch tags for suggestions
+function fetchTags(query) {
+    fetch(`../app/actions/tag/getAllJson.php?query=${query}`)
+        .then(response => response.json())
+        .then(tags => {
+            tagsList.innerHTML = '';
+            tags.forEach(tag => {
+                const tagItem = document.createElement('div');
+                tagItem.classList.add('px-4', 'py-2', 'cursor-pointer', 'hover:bg-gray-100');
+                tagItem.textContent = tag.titre;
+                tagItem.setAttribute('data-id', tag.id);
+                tagItem.setAttribute('data-name', tag.titre);
+                tagsList.appendChild(tagItem);
+                tagItem.addEventListener('click', function () {
+                    addTag(tag);
+                });
+            });
+            tagsList.classList.remove('hidden');
+        });
+}
+
+function addTag(tag) {
+    if (!selectedTags.some(t => t.id === tag.id || t.titre.toLowerCase() === tag.titre.toLowerCase())) {
+        selectedTags.push(tag);
+        updateSelectedTags();
+        console.log("new",selectedTags)
+    }
+    document.getElementById('editCourseTags').value = '';
+    tagsList.classList.add('hidden');
+}
+
+function removeTag(tag) {
+    selectedTags = selectedTags.filter(t => t.id !== tag.id);
+    updateSelectedTags();
+}
+
+function updateSelectedTags() {
+    
+    selectedTagsContainer.innerHTML = '';
+    const tagsInput = document.getElementById('editTags');
+    tagsInput.value = JSON.stringify(selectedTags.map(tag => tag.id)); 
+
+    selectedTags.forEach(tag => {
+        const tagElement = document.createElement('div');
+        tagElement.classList.add('bg-blue-500', 'text-white', 'px-4', 'py-1', 'rounded-full', 'flex', 'items-center', 'gap-2');
+        tagElement.textContent = tag.titre;
+
+        const removeIcon = document.createElement('span');
+        removeIcon.textContent = '×';
+        removeIcon.classList.add('cursor-pointer');
+        removeIcon.addEventListener('click', () => removeTag(tag));
+
+        tagElement.appendChild(removeIcon);
+        selectedTagsContainer.appendChild(tagElement);
+    });
+}
+
+function toggleModal(show) {
+    const modal = document.getElementById('editCourseModal');
+    modal.classList.toggle('hidden', !show);
+
+    if (!show) {
+        document.getElementById('editCourseForm').reset();
+        selectedTags = [];
+        updateSelectedTags();
+        toggleContentField(); 
+    }
+}
+
+function toggleContentField(type = '') {
+    const textField = document.getElementById('editTextContentField');
+    const videoField = document.getElementById('editVideoContentField');
+
+    if (type === 'texte') {
+        textField.classList.remove('hidden');
+        videoField.classList.add('hidden');
+    } else if (type === 'video') {
+        videoField.classList.remove('hidden');
+        textField.classList.add('hidden');
+    } else {
+        textField.classList.add('hidden');
+        videoField.classList.add('hidden');
+    }
+}
+
+document.getElementById('editCourseTags').addEventListener('input', function () {
+    const query = this.value.trim();
+    if (query.length >= 1) {
+        fetchTags(query);
+    } else {
+        tagsList.classList.add('hidden');
+    }
+});
+
+courseTagsInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && courseTagsInput.value.trim() !== '') {
+        e.preventDefault(); 
+        const newTag = { id: 'new' + selectedTags.length, titre: courseTagsInput.value.trim() };
+        addTag(newTag);
+    }
+});
+
+document.getElementById('editCourseType').addEventListener('change', (e) => {
+    toggleContentField(e.target.value);
+});
+
+
+
 function confirmDelete(courseId) {
     Swal.fire({
         title: 'Delete Course?',
@@ -259,6 +520,31 @@ function confirmDelete(courseId) {
         }
     });
 }
+document.getElementById('editCourseForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    formData.append('selectedTags', JSON.stringify(selectedTags));
+    fetch('/Youdemy/app/actions/cours/update.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json(); 
+    })
+    .then(data => {
+        console.log(data); 
+         window.location.href ='cours.php'
+   
+    })
+    .catch(error => {
+        console.error('Error occurred:', error);
+        alert(`An unexpected error occurred: ${error.message}`);
+    });
+    
+});
 </script>
 
     <!-- FAQs Section -->

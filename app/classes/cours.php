@@ -120,7 +120,7 @@ abstract class Cours  {
                     
                 } else 
                 {
-                    return new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'], $row['contenu'],$row['enseignant_id'] ,$row['contenu_type'],$row['status']);
+                    return new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'], $row['enseignant_id'],$row['contenu'] ,$row['contenu_type'],$row['status']);
 
                 }
    }
@@ -146,7 +146,7 @@ abstract class Cours  {
                   
                 } else 
                 {
-                    $cour = new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'], $row['contenu'],$row['enseignant_id'] ,$row['contenu_type'],$row['status']);
+                    $cour = new coursTexte($row['id'], $row['titre'], $row['description'], $row['categorie_id'], $row['image_path'],$row['enseignant_id'], $row['contenu'] ,$row['contenu_type'],$row['status']);
                     $cour->setFullName($row['fullName']);
                   
                 }
@@ -300,6 +300,13 @@ abstract class Cours  {
 
         return $stmt->execute();
     }
+    public function detachAllTags() {
+        $pdo = Database::getInstance()->getConnection();
+        $stmt = $pdo->prepare("DELETE FROM cours_tag WHERE cours_id = :cours_id");
+        $stmt->bindParam(':cours_id', $this->id);
+        return $stmt->execute();
+    }
+    
     static function afficherTousParEtudiant($idE)
     {
         $pdo = Database::getInstance()->getConnection();
@@ -389,6 +396,17 @@ abstract class Cours  {
         } catch (Exception $e) {
             return 401;
         }
+    }
+    public static function getAllJson($id)
+    {
+        $pdo = Database::getInstance()->getConnection();
+        $stmt = $pdo->prepare("SELECT * FROM Cours where id = :id ");
+        $stmt->bindValue(':id',$id,PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        return $result;
+
     }
     public function attachTag($tagId) {
         try {

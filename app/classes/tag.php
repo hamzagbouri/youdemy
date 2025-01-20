@@ -85,6 +85,15 @@ class Tag {
 
         return $stmt->execute();
     }
+    public static function getTagsByCours($idC)
+    {
+        $pdo = Database::getInstance()->getConnection();
+        $stmt = $pdo->prepare("SELECT t.* FROM Tag t INNER JOIN cours_tag ct on t.id = ct.tag_id  WHERE ct.cours_id = :id");
+        $stmt->bindParam(':id', $idC);
+         $stmt->execute();
+         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 
     public function getId() {
         return $this->id;
