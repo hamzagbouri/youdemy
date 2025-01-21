@@ -6,7 +6,7 @@ $totalCoursByCategory = getCours::totalCoursByCategory();
 $mostInscriptions = getCours::mostInscriptions();
 $topCoursesWithInstructor = getCours::topCoursesWithInstructor();
 session_start();
-if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'enseignant')
+if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'admin')
 {
         header('Location: ../index.php');
     

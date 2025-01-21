@@ -2,7 +2,7 @@
 require_once '../../app/actions/tag/get.php';
 session_start();
 $allTags = getTag::getAllTags();
-if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'enseignant')
+if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'admin')
 {
         header('Location: ../index.php');
     

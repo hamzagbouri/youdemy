@@ -3,7 +3,7 @@
 require_once '../../app/actions/user/get.php';
 $allUsers = getUser::getAllUsers();
 session_start();
-if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'enseignant')
+if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'admin')
 {
         header('Location: ../index.php');
     

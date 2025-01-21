@@ -3,7 +3,7 @@
 
 require_once '../../app/actions/cours/getCours.php';
 $allCours = getCours::getAllAdmin();
-if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'enseignant')
+if(!isset($_SESSION['logged_id']) || $_SESSION['role'] !== 'admin')
 {
         header('Location: ../index.php');
     
